@@ -1,7 +1,7 @@
 
 <!-- ====================2014/100-milhoes-de-dolares-em-droga/index.html -->
 <pub>
-#TAG: tag:{Apreensão} tag:{Droga} tag:{EUA} tag:{São Tomé e Príncipe} tag:{narcotráfico} 
+#TAG: tag:{Apreensão} tag:{Droga} tag:{EUA} tag:{São Tomé e Príncipe} tag:{narcotráfico}
 #ID:{post-1643 post type-post status-publish format-standard has-post-thumbnail hentry category-lusofonia tag-apreensao tag-droga tag-eua tag-sao-tome-e-principe tag-narcotrafico}
 Lusofonia
 
