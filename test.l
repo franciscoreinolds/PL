@@ -1,6 +1,9 @@
 %{
+#include <gmodule.h>
+#include <glib.h>
 #include <stdlib.h>
-#include <stdlib.h>
+#define gp_to_int(p) ((gint)  (glong) (p))
+#define gi_to_ptr(i) ((gpointer) (glong) (i))
 int article=0;
 %}
 letter [a-zA-Z0-9]
@@ -14,7 +17,7 @@ letter [a-zA-Z0-9]
 "<pub>"			 				{BEGIN NEWS; printf("Artigo nº%d\n",article+1);}	//Começa a Start Condition NEWS
 <NEWS>"</pub>" 					{BEGIN INITIAL;printf("Fim do artigo nº%d\n\n",++article);}	//Começa a Start Condition INITIAL
 <NEWS>"#TAG: "					{BEGIN TAGS;}	//Começa a Start Condition TAGS
-<TAGS>"tag:{"[^}]*"}"			{printf("yytext: %s",yytext);}	//Imprime as tags individuais
+<TAGS>"tag:{"[^}]*"}"			{yytext[yyleng-1]='\0'; printf("yytext: %s", yytext+5);}	//Imprime as tags individuais
 <TAGS>"#ID:"					{BEGIN ID;}	//Começa a Start Condition ID
 <ID>"{"[^}]*"}"					{printf("id: %sFIM",yytext); BEGIN CATEGORY;} //Imprime info relacionada com ID e começa a Start Condition CATEGORY
 <CATEGORY>^(.)*					{printf("Categoria: %s", yytext); BEGIN TITLE;} //Imprime a categoria da notícia e começa a Start Condition TITLE
@@ -32,6 +35,24 @@ int yywrap(){
 }
 
 int main(){
- yylex();
- return 0;
+ 	yylex();
+ 	char* ola = "Ola";
+ 	GHashTable* hash = NULL;
+ 	
+ 	gchar* gkey = g_new(gchar,1);
+	gkey = (gchar*) ola;
+	
+	gint* gvalue = g_new(gint,1);
+
+	gvalue = gi_to_ptr(1);
+  	
+  	hash = g_hash_table_new_full (g_int_hash, g_int_equal,g_free,NULL);
+	g_hash_table_insert(hash, gkey, gvalue);
+
+	gint* res = (g_hash_table_lookup(hash, gkey));
+
+	int lol = gp_to_int(res);
+
+	printf("The item is '%d'\n", lol);
+	return 0;
 }
