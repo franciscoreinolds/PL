@@ -134,11 +134,12 @@ dig [0-9]
 <NEWS>\[.*] 					{;} //Ignora as [aaa16] que se encontram antes do corpo das notícias
 
 <NEWS>.|\n						{
-									if(article <= lim){ 
+								if(article <= lim){ 
 										fprintf(fd,"%s",yytext);
-										//printf("%s",yytext);
+										printf("%s",yytext);
 									}
 								}
+.|\n 							{;}
 %%
 
 int yywrap(){
