@@ -6,4 +6,4 @@ lex.yy.c: test.l
 	lex test.l
 
 clean:
-	rm prog normalized.txt
+	rm prog normalized.txt *.html
