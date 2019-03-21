@@ -13,6 +13,7 @@ int lim = 0;
 int nTags = 0; // Representa o número de tags de um post, para saber quantas tem te imprimir no ficheiro
 FILE* 		fd = NULL;
 FILE*	    html = NULL;
+FILE*	    html1 = NULL;
 char		*fileName = "";
 char		*fileType = ".html";
 char 		*id       = "";
@@ -37,11 +38,11 @@ dig [0-9]
 
 %%
 
-"<pub>"			 				{	
+"<pub>"			 				{
 	article++;
 	if(article <= lim){
 		printf("Artigo nº%d\n",article);
-		printf("hello :D"); 
+		printf("hello :D");
 		fprintf(fd,"%s%d%s", "Artigo nº",article,"\n");
 		BEGIN NEWS;
 		html = fopen("lixo.html", "w");
@@ -51,9 +52,9 @@ dig [0-9]
 <NEWS>"</pub>" 					{
 	if(article <= lim){
 		fprintf(html, "\t</text>\n</pub>");
-		fclose(html); 
+		fclose(html);
 		printf("Fim do artigo nº%d\n\n",article);
-		fprintf(fd,"%s%d%s", "Fim do artigo nº",article,"\n\n");								
+		fprintf(fd,"%s%d%s", "Fim do artigo nº",article,"\n\n");
 		if(nTags == 0) g_array_free(tags, FALSE);
 		else g_array_free(tags, TRUE);
 		BEGIN INITIAL;
@@ -76,11 +77,27 @@ dig [0-9]
 		g_array_append_val(tags,s);
 		//free(tag);
 		nTags++;
+
+	char *tag2 = strdup(yytext+5);
+	if(g_hash_table_lookup(hash, s)){
+		void* res = g_hash_table_lookup(hash, s);
+    int lol = gp_to_int(res);
+		lol++;
+		res=gi_to_ptr(lol);
+		g_hash_table_replace (hash, s, res);
+
+	}
+	else {
+	gint* gkey = g_new(gint,1);
+    gkey = gi_to_ptr(1);
+    g_hash_table_insert (hash, s, gkey);
+	}
+
 	}
 }	//Coloca as Tags num array
 
 <NEWS>"#ID:{post-"[^ ]+			{
-	if(article <= lim){ 
+	if(article <= lim){
 		BEGIN ID;
 		GString *tag;
 		printf("id: %s", yytext+5);
@@ -96,8 +113,8 @@ dig [0-9]
 } //Imprime info relacionada com ID e começa a Start Condition CATEGORY
 
 <CATEGORY>^(.)*					{
-	if(article <= lim){ 
-		printf("Categoria: %s\n", yytext); 
+	if(article <= lim){
+		printf("Categoria: %s\n", yytext);
 		category = strdup(yytext);
 		char* toWrite = malloc(strlen(yytext) + strlen("\nCategoria: "));
 		toWrite[0] = '\0';
@@ -111,7 +128,7 @@ dig [0-9]
 } //Imprime a categoria da notícia e começa a Start Condition TITLE
 
 <TITLE>^(.)*					{
-	if(article <= lim){ 
+	if(article <= lim){
 		fprintf(html,"<title>%s</title>\n",yytext);
 		char* toW = malloc((strlen(yytext) + strlen("\nTitulo: ")));
 		toW[0] = '\0';
@@ -122,7 +139,7 @@ dig [0-9]
 		free(toW);
 		printf("Title: %s", yytext);
 		BEGIN DATE;
-	
+
 	}
 }	//Imprime o título e começa a Start Condition Date
 
@@ -149,7 +166,7 @@ dig [0-9]
 <NEWS>\[.*] 					{;} //Ignora as [aaa16] que se encontram antes do corpo das notícias
 
 <NEWS>.|\n						{
-	if(article <= lim){ 
+	if(article <= lim){
 		fprintf(fd,"%s", yytext);
 		printf("%s",yytext);
 		fprintf(html,"%s", yytext);
@@ -171,11 +188,14 @@ int main(int argc, char *argv[]){
 	yyin=fopen(argv[1],"r");
 
 	lim = atoi(argv[2]);
+	hash = g_hash_table_new_full (g_str_hash, g_str_equal,free_data,free_data);
+
 
  	yylex();
 
-    /*
-    hash = g_hash_table_new_full (g_str_hash, g_str_equal,free_data,free_data);
+
+
+	/*
 
     char* tag = "Droga";
     gint* gkey = g_new(gint,1);
@@ -186,14 +206,49 @@ int main(int argc, char *argv[]){
     void* res = g_hash_table_lookup(hash, tag2);
     int lol = gp_to_int(res);
 
-    GList* lista = g_hash_table_get_keys (hash);
-    
+
+	char* tag2 = strdup(yytext+5);
+	if(g_hash_table_lookup(hash, tag2)){
+		void* res = g_hash_table_lookup(hash, tag2);
+    GString *tag;	int lol = gp_to_int(res);
+		lol++;
+		res=gi_to_ptr(lol);
+		g_hash_table_replace (hash, tag2, res);
+
+	}
+	else {
+	gint* gkey = g_new(gint,1);
+    gkey = gi_to_ptr(1);
+    g_hash_table_insert (hash, tag2, gkey);
+	}
+
+
+
+	GList* lista = g_hash_table_get_keys (hash);
+
     GList *l;
     for (l = lista; l != NULL; l = l->next){
         char* s = l->data;
-        //printf("Elem:%s\n", s);
+        printf("Elem:%s\n", s);
     }
-    */
+		*/
+		GHashTableIter iter;
+		gpointer key1, value1;
+
+		g_hash_table_iter_init (&iter, hash);
+		while (g_hash_table_iter_next (&iter, &key1, &value1))
+		  {
+		    // do something with key and value
+				int lol1 = gp_to_int(value1);
+				GString *tag=key1;
+			//	printf("Elem:%s -> %d\n", tag->str,lol1);
+				char *fileName1 = malloc((strlen("lista_tags")+ strlen(fileType))*sizeof(char));
+				fileName1[0]='\0';
+				strcat(fileName1, "lista_tags");
+				strcat(fileName1, fileType);
+				html1 = fopen(fileName1,"a");
+				fprintf(html1, "Elem:%s -> %d\n", tag->str,lol1);
+		  }
 
 	unlink("lixo.html");
     fclose(fd);
