@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include "free.h"
+#include "common.h"
+#include "tag.h"
+#include "tag.c"
+#include "common.c"
+
 #define gp_to_int(p) ((gint)  (glong) (p))
 #define gi_to_ptr(i) ((gpointer) (glong) (i))
 
@@ -75,25 +80,32 @@ dig [0-9]
 		//char *tag = strdup(yytext+5);
 		GString *s = g_string_new(yytext+5);
 		g_array_append_val(tags,s);
-		//free(tag);
+	//	free(tags);
 		nTags++;
 
-	char *tag2 = strdup(yytext+5);
-	if(g_hash_table_lookup(hash, s)){
-		void* res = g_hash_table_lookup(hash, s);
-    int lol = gp_to_int(res);
-		lol++;
-		res=gi_to_ptr(lol);
-		g_hash_table_replace (hash, s, res);
+
+		char *tag2 = strdup(yytext+5);
+		int key= g_str_hash(tag2);
+		gint * gkey = g_new(gint,1);
+		*gkey = key;
+		TAG res;
+
+		if(!g_hash_table_lookup(hash, gkey)){
+			TAG u=create_user(tag2,1);
+			g_hash_table_insert (hash, gkey , u);
+		}
+			else {
+			res = g_hash_table_lookup(hash, gkey);
+			set(res);
+			g_hash_table_steal (hash, gkey);
+			g_hash_table_insert (hash, gkey , res);
+
+
+		}
 
 	}
-	else {
-	gint* gkey = g_new(gint,1);
-    gkey = gi_to_ptr(1);
-    g_hash_table_insert (hash, s, gkey);
-	}
 
-	}
+
 }	//Coloca as Tags num array
 
 <NEWS>"#ID:{post-"[^ ]+			{
@@ -119,10 +131,10 @@ dig [0-9]
 		char* toWrite = malloc(strlen(yytext) + strlen("\nCategoria: "));
 		toWrite[0] = '\0';
 		strcat(toWrite,"\nCategoria: ");
-		strcat(toWrite,strdup(yytext));
+		strcat(toWrite,category);
 		strcat(toWrite,"\0");
 		fprintf(fd,"%s",toWrite);
-		free(toWrite);
+		//free(toWrite);
 		BEGIN TITLE;
 	}
 } //Imprime a categoria da notícia e começa a Start Condition TITLE
@@ -193,62 +205,30 @@ int main(int argc, char *argv[]){
 
  	yylex();
 
-
+//	g_hash_table_destroy (hash);
 
 	/*
-
-    char* tag = "Droga";
-    gint* gkey = g_new(gint,1);
-    gkey = gi_to_ptr(5);
-    g_hash_table_insert (hash, tag, gkey);
-
-    char* tag2 = "Droga";
-    void* res = g_hash_table_lookup(hash, tag2);
-    int lol = gp_to_int(res);
-
-
-	char* tag2 = strdup(yytext+5);
-	if(g_hash_table_lookup(hash, tag2)){
-		void* res = g_hash_table_lookup(hash, tag2);
-    GString *tag;	int lol = gp_to_int(res);
-		lol++;
-		res=gi_to_ptr(lol);
-		g_hash_table_replace (hash, tag2, res);
-
-	}
-	else {
-	gint* gkey = g_new(gint,1);
-    gkey = gi_to_ptr(1);
-    g_hash_table_insert (hash, tag2, gkey);
-	}
-
-
-
-	GList* lista = g_hash_table_get_keys (hash);
-
-    GList *l;
-    for (l = lista; l != NULL; l = l->next){
-        char* s = l->data;
-        printf("Elem:%s\n", s);
-    }
-		*/
 		GHashTableIter iter;
-		gpointer key1, value1;
+		gpointer key1;
+		TAG value1;
 
 		g_hash_table_iter_init (&iter, hash);
-		while (g_hash_table_iter_next (&iter, &key1, &value1))
+		while (g_hash_table_iter_next (&iter, &key1, (gpointer) &value1))
 		  {
-		    // do something with key and value
-				int lol1 = gp_to_int(value1);
-				GString *tag=key1;
-			//	printf("Elem:%s -> %d\n", tag->str,lol1);
-				char *fileName1 = malloc((strlen("lista_tags")+ strlen(fileType))*sizeof(char));
-				fileName1[0]='\0';
-				strcat(fileName1, "lista_tags");
-				strcat(fileName1, fileType);
-				html1 = fopen(fileName1,"a");
-				fprintf(html1, "Elem:%s -> %d\n", tag->str,lol1);
+				if(value1!=NULL){
+					int lol1 = get_num(value1);
+					char* tag=get_nome(value1);
+					char *fileName1 = malloc((strlen("lista_tags")+ strlen(fileType))*sizeof(char));
+					fileName1[0]='\0';
+					strcat(fileName1, "lista_tags");
+					strcat(fileName1, fileType);
+					html1 = fopen(fileName1,"a");
+					fprintf(html1, "Elem:%s -> %d\n", tag,lol1);
+				}
 		  }
+*/
+
+
 
 	unlink("lixo.html");
     fclose(fd);

@@ -1,14 +1,14 @@
 
 <!-- ====================2014/100-milhoes-de-dolares-em-droga/index.html -->
 <pub>
-#TAG: tag:{Apreensão} tag:{Droga} tag:{EUA} tag:{São Tomé e Príncipe} tag:{narcotráfico}
+#TAG: tag:{Apreensão} tag:{Droga} tag:{EUA} tag:{São Tomé e Príncipe} tag:{narcotráfico} tag:{narcotráfico}
 #ID:{post-1643 post type-post status-publish format-standard has-post-thumbnail hentry category-lusofonia tag-apreensao tag-droga tag-eua tag-sao-tome-e-principe tag-narcotrafico}
 Lusofonia
 
 100 milhões de dólares em droga
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PARTILHE VIA:     
+PARTILHE VIA:
 #DATE: [116eb] Redacção F8 — 30 de Setembro de 2014
 [aaa15]
 
@@ -53,14 +53,14 @@ Etiquetas: ApreensãoDrogaEUASão Tomé e Príncipenarcotráfico
 
 <!-- ====================2014/140-milhoes-de-dolares-para-dois-petroleiros/index.html -->
 <pub>
-#TAG: tag:{Sonangol} tag:{coreia do sul} tag:{petroleiros} 
+#TAG: tag:{Sonangol} tag:{coreia do sul} tag:{petroleiros}
 #ID:{post-5702 post type-post status-publish format-standard has-post-thumbnail hentry category-economia category-destaque tag-sonangol tag-coreia-do-sul tag-petroleiros}
 EconomiaDestaque
 
 140 milhões de dólares para dois petroleiros
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PARTILHE VIA:     
+PARTILHE VIA:
 #DATE: [116eb] Redacção F8 — 11 de Dezembro de 2014
 140 milhões de dólares para dois petroleiros - Folha 8
 
@@ -100,14 +100,14 @@ Etiquetas: Sonangolcoreia do sulpetroleiros
 
 <!-- ====================2014/1-500-desalojados-pelas-chuvas-no-zaire/index.html -->
 <pub>
-#TAG: tag:{Angola} tag:{Desalojados} tag:{chuvas} tag:{zaire} 
+#TAG: tag:{Angola} tag:{Desalojados} tag:{chuvas} tag:{zaire}
 #ID:{post-4816 post type-post status-publish format-standard has-post-thumbnail hentry category-sociedade tag-angola tag-desalojados tag-chuvas tag-zaire}
 Sociedade
 
 1.500 desalojados pelas chuvas no Zaire
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PARTILHE VIA:     
+PARTILHE VIA:
 #DATE: [116eb] Redacção F8 — 21 de Novembro de 2014
 1.500 desalojados pelas chuvas no Zaire - Folha 8
 
@@ -146,14 +146,14 @@ Etiquetas: AngolaDesalojadoschuvaszaire
 
 <!-- ====================2014/2014-o-ano-da-vitoria-da-baderna/index.html -->
 <pub>
-#TAG: tag:{2014} tag:{Aqui falo eu} tag:{Corrupção} tag:{MPLA} tag:{baderna} tag:{balanço} 
+#TAG: tag:{2014} tag:{Aqui falo eu} tag:{Corrupção} tag:{MPLA} tag:{baderna} tag:{balanço}
 #ID:{post-6225 post type-post status-publish format-standard has-post-thumbnail hentry category-aqui-falo-eu tag-1446 tag-aqui-falo-eu-1 tag-corrupcao tag-mpla tag-baderna tag-balanco}
 Aqui Falo Eu
 
 Ano da vitória da baderna
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PARTILHE VIA:     
+PARTILHE VIA:
 #DATE: [116eb] Redacção F8 — 29 de Dezembro de 2014
 Ano da vitória da baderna - Folha 8
 
