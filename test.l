@@ -207,7 +207,8 @@ int main(int argc, char *argv[]){
 
 //	g_hash_table_destroy (hash);
 
-	/*
+// esta parte esta a dar erro para 4 artigos mas funciona para 1,2 e 3.
+	/* 
 		GHashTableIter iter;
 		gpointer key1;
 		TAG value1;
