@@ -115,7 +115,10 @@ dig [0-9]
 		printf("id: %s", yytext+5);
 		char *fileName = yytext+5;
 		strcat(fileName, fileType);
-		html = fopen(fileName,"w"); //ficheiro .html que contem um post
+		char *dir = (char *) malloc(50);
+		strcat(dir, "html/");
+		strcat(dir, fileName);
+		html = fopen(dir,"w"); //ficheiro .html que contem um post
 		fprintf(html, "<pub id=\"%s\">\n", yytext+5);
 	}
 }	//Começa a Start Condition ID, Imprime as tags no ficheiro HTMl correspondente
