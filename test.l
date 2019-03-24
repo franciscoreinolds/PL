@@ -25,6 +25,7 @@ char 		*id       = "";
 char 		*title    = "";
 char 		*author   = "";
 char 		*category = "";
+char		*dir = NULL;
 GString 	*text;
 GHashTable	*hash;
 GArray 		*tags;
@@ -62,6 +63,7 @@ dig [0-9]
 		fprintf(fd,"%s%d%s", "Fim do artigo nº",article,"\n\n");
 		if(nTags == 0) g_array_free(tags, FALSE);
 		else g_array_free(tags, TRUE);
+		//free(dir);
 		BEGIN INITIAL;
 	}
 }	//Começa a Start Condition INITIAL
@@ -112,14 +114,19 @@ dig [0-9]
 	if(article <= lim){
 		BEGIN ID;
 		GString *tag;
-		printf("id: %s", yytext+5);
+
 		char *fileName = yytext+5;
 		strcat(fileName, fileType);
-		char *dir = (char *) malloc(50);
+
+		char *dir = (char *) malloc(100);
+		dir[0] = '\0'; 
 		strcat(dir, "html/");
 		strcat(dir, fileName);
+
 		html = fopen(dir,"w"); //ficheiro .html que contem um post
 		fprintf(html, "<pub id=\"%s\">\n", yytext+5);
+
+		free(dir);
 	}
 }	//Começa a Start Condition ID, Imprime as tags no ficheiro HTMl correspondente
 
@@ -235,7 +242,7 @@ int main(int argc, char *argv[]){
 
 
 	unlink("lixo.html");
-    fclose(fd);
+  fclose(fd);
 
 	return 0;
 }
