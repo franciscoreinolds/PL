@@ -225,11 +225,14 @@ int main(int argc, char *argv[]){
 
 //	g_hash_table_destroy (hash);
 
-// esta parte esta a dar erro para 4 artigos mas funciona para 1,2 e 3.
-	/* 
 		GHashTableIter iter;
 		gpointer key1;
 		TAG value1;
+
+		char *fileName1 = malloc((strlen("lista_tags")+ strlen(fileType))*sizeof(char));
+		fileName1[0]='\0';
+		strcat(fileName1, "lista_tags");
+		strcat(fileName1, fileType);
 
 		g_hash_table_iter_init (&iter, hash);
 		while (g_hash_table_iter_next (&iter, &key1, (gpointer) &value1))
@@ -237,15 +240,14 @@ int main(int argc, char *argv[]){
 				if(value1!=NULL){
 					int lol1 = get_num(value1);
 					char* tag=get_nome(value1);
-					char *fileName1 = malloc((strlen("lista_tags")+ strlen(fileType))*sizeof(char));
-					fileName1[0]='\0';
-					strcat(fileName1, "lista_tags");
-					strcat(fileName1, fileType);
 					html1 = fopen(fileName1,"a");
-					fprintf(html1, "Elem:%s -> %d\n", tag,lol1);
+					if(html1 && tag && lol1){
+						//printf("nº -> %d\n", lol1);
+						//printf("tagº -> %s\n", tag);
+						// fprintf(html1, "Elem:%s -> %d\n", tag,lol1);  // esta é linha que dá merda !!!!!!
+					}
 				}
 		  }
-*/
 
 
 	unlink("lixo.html");
