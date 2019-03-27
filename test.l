@@ -51,10 +51,11 @@ dig [0-9]
 	article++;
 	if(article <= lim){
 		printf("Artigo nº%d\n",article);
-		printf("hello :D");
+		printf("hello :D\n");
 		fprintf(fd,"%s%d%s", "Artigo nº",article,"\n");
-		BEGIN NEWS;
 		html = fopen("lixo.html", "w");
+		BEGIN NEWS;
+		printf("news begun\n");
 	}
 }	//Começa a Start Condition NEWS
 
@@ -73,6 +74,7 @@ dig [0-9]
 
 <NEWS>"#TAG: "					{
 	if(article <= lim){
+			printf("Depois\n");
     	tags = g_array_new(FALSE, FALSE, sizeof(GString *));
     	fprintf(fd,"%s","Tags:");
 	}
@@ -80,6 +82,7 @@ dig [0-9]
 
 <NEWS>"tag:{"[^}]*"}"			{
 	if(article <= lim){
+		printf("aqui n chega\n");
 		yytext[yyleng-1]='\0';
 		fprintf(fd," %s",yytext+5);
 		//char *tag = strdup(yytext+5);
@@ -108,6 +111,7 @@ dig [0-9]
 
 		}
 
+
 	}
 
 
@@ -115,8 +119,10 @@ dig [0-9]
 
 <NEWS>"#ID:{post-"[^ ]+			{
 	if(article <= lim){
+		printf("Do id\n");
 		temp = (char *) malloc(sizeof(yytext+5));
 		strcpy(temp, yytext+5);
+
 		if(g_hash_table_add(idPosts, temp) == TRUE){
 			BEGIN ID;
 			//GString *tag;
@@ -152,7 +158,7 @@ dig [0-9]
 		strcat(toWrite,category);
 		strcat(toWrite,"\0");
 		fprintf(fd,"%s",toWrite);
-		//free(toWrite);
+		free(toWrite);
 		BEGIN TITLE;
 	}
 } //Imprime a categoria da notícia e começa a Start Condition TITLE
@@ -162,11 +168,13 @@ dig [0-9]
 		fprintf(html,"<title>%s</title>\n",yytext);
 		char* toW = malloc((strlen(yytext) + strlen("\nTitulo: ")));
 		toW[0] = '\0';
-		strcat(toW,strdup("\nTitulo: "));
+		strcat(toW,"\nTitulo: ");
 		strcat(toW,strdup(yytext));
 		strcat(toW,"\0");
 		fprintf(fd,"%s",toW);
-		free(toW);
+		printf("Oi\n");
+		//free(toW);
+		printf("bye\n");
 		printf("Title: %s", yytext);
 		BEGIN DATE;
 
@@ -199,7 +207,10 @@ dig [0-9]
 	if(article <= lim){
 		fprintf(fd,"%s", yytext);
 		printf("%s",yytext);
+		printf("Oi\n");
 		fprintf(html,"%s", yytext);
+		printf("XAU\n");
+		//printf("Passa daqui\n");
 	}
 }
 
@@ -220,16 +231,16 @@ int main(int argc, char *argv[]){
 	yyin=fopen(argv[1],"r");
 
 	lim = atoi(argv[2]);
-	hash = g_hash_table_new_full (g_str_hash, g_str_equal,free_data,free_data);
+	hash = g_hash_table_new_full (g_str_hash, g_str_equal,g_free,NULL);
 
-	idPosts = g_hash_table_new(g_str_hash, g_str_equal);
+	idPosts = g_hash_table_new_full (g_str_hash, g_str_equal,g_free,NULL);
 
  	yylex();
 
 	GHashTableIter iter;
-	gpointer key1;	
+	gpointer key1;
 	TAG value1;
-	
+
 		char *fileName1 = malloc((strlen("lista_tags")+ strlen(fileType))*sizeof(char));
 		fileName1[0]='\0';
 		strcat(fileName1, "lista_tags");
@@ -250,8 +261,9 @@ int main(int argc, char *argv[]){
 					}
 				}
 		  }
-	
-	//g_hash_table_destroy (hash);
+
+	g_hash_table_destroy (hash);
+	g_hash_table_destroy (idPosts);
 	fclose(html1);
 
 
