@@ -15,7 +15,7 @@
 
 int article = 0;
 int lim = 0;
-int nTags = 0; // Representa o número de tags de um post, para saber quantas tem te imprimir no ficheiro
+int nTags = 0; // Representa o número de tags de um post
 FILE* 		fd = NULL;
 FILE*	    html = NULL;
 FILE*	    html1 = NULL;
@@ -26,8 +26,10 @@ char 		*title    = "";
 char 		*author   = "";
 char 		*category = "";
 char		*dir = NULL;
+char 		*temp; // apontador temporário usado para escrever as tags na hash table
 GString 	*text;
 GHashTable	*hash;
+GHashTable	*idPosts;
 GArray 		*tags;
 
 %}
@@ -82,7 +84,7 @@ dig [0-9]
 		//char *tag = strdup(yytext+5);
 		GString *s = g_string_new(yytext+5);
 		g_array_append_val(tags,s);
-	//	free(tags);
+		//free(tags);
 		nTags++;
 
 
@@ -112,23 +114,28 @@ dig [0-9]
 
 <NEWS>"#ID:{post-"[^ ]+			{
 	if(article <= lim){
-		BEGIN ID;
-		GString *tag;
+		temp = (char *) malloc(sizeof(yytext+5));
+		strcpy(temp, yytext+5);
+		if(g_hash_table_add(idPosts, temp) == TRUE){
+			BEGIN ID;
+			//GString *tag;
 
-		char *fileName = yytext+5;
-		strcat(fileName, fileType);
+			char *fileName = yytext+5;
+			strcat(fileName, fileType);
 
-		char *dir = (char *) malloc(100);
-		dir[0] = '\0'; 
-		strcat(dir, "html/");
-		strcat(dir, fileName);
+			char *dir = (char *) malloc(100);
+			dir[0] = '\0';
+			strcat(dir, "html/");
+			strcat(dir, fileName);
 
-		html = fopen(dir,"w"); //ficheiro .html que contem um post
-		fprintf(html, "<pub id=\"%s\">\n", yytext+5);
+			html = fopen(dir,"w"); //ficheiro .html que contem um post
+			fprintf(html, "<pub id=\"%s\">\n", yytext+5);
 
-		free(dir);
+			free(dir);
+			free(temp);
+		}
 	}
-}	//Começa a Start Condition ID, Imprime as tags no ficheiro HTMl correspondente
+}	//Começa a Start Condition ID, Cria o ficheiro HTML para o artigo atual e o respetivo path.
 
 <ID>[^}]*"}"					{
 	BEGIN CATEGORY;
@@ -168,7 +175,7 @@ dig [0-9]
 <DATE>[━|(PARTILHE VIA:)]*		{;} //Ignora a barra gigante e o "PARTILHE VIA" antes da data
 
 <DATE>"#DATE: ["[^]]*"]".*		{
-	printf("Cena da date: %s", yytext+14);
+	//printf("Cena da date: %s", yytext+14);
 	yytext[yyleng-1]='\0';
 	fprintf(html, "\t<author_data>%s</author_date>\n", yytext+14); //imprime a data
 	fprintf(html, "\t<tags>\n\t\t");
@@ -181,7 +188,7 @@ dig [0-9]
 	nTags = 0;
 	BEGIN NEWS;
 
-}	//Imprime a data da notícia, autor e começa a Start Condition NEWS
+}	//Imprime a data da notícia, autor e começa a Start Condition NEWS, Imprime as tags no ficheiro HTMl correspondente
 
 <NEWS>"Etiquetas".* 			{;}	//Ignora a parte das Etiquetas da Notícia
 
@@ -212,6 +219,7 @@ int main(int argc, char *argv[]){
 	lim = atoi(argv[2]);
 	hash = g_hash_table_new_full (g_str_hash, g_str_equal,free_data,free_data);
 
+	idPosts = g_hash_table_new(g_str_hash, g_str_equal);
 
  	yylex();
 
@@ -238,7 +246,6 @@ int main(int argc, char *argv[]){
 				}
 		  }
 */
-
 
 
 	unlink("lixo.html");
