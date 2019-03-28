@@ -1,5 +1,5 @@
 prog: lex.yy.c
-	gcc lex.yy.c `pkg-config --cflags --libs glib-2.0` -o prog
+	gcc lex.yy.c -g `pkg-config --cflags --libs glib-2.0` -o prog
 	rm lex.yy.c
 
 lex.yy.c: test.l

@@ -1,5 +1,4 @@
 %{
-#include <gmodule.h>
 #include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,8 +29,8 @@ char		*dir = NULL;
 char 		*temp; // apontador temporário usado para escrever as tags na hash table
 GString 	*text;
 GHashTable	*hash;
-GHashTable	*idPosts;
-GArray 		*tags;
+GTree	*idPosts;
+GArray *tags;
 
 %}
 
@@ -65,53 +64,42 @@ dig [0-9]
 		fclose(html);
 		printf("Fim do artigo nº%d\n\n",article);
 		fprintf(fd,"%s%d%s", "Fim do artigo nº",article,"\n\n");
-		if(nTags == 0) g_array_free(tags, FALSE);
+		if(nTags == 0) {
+			//g_array_free(tags, FALSE);
+		}
 		else g_array_free(tags, TRUE);
 		//free(dir);
 		BEGIN INITIAL;
+		nTags = 0;
 	}
 }	//Começa a Start Condition INITIAL
 
 <NEWS>"#TAG: "					{
 	if(article <= lim){
-			printf("Depois\n");
-    	tags = g_array_new(FALSE, FALSE, sizeof(GString *));
+			printf("Array initialization\n");
+    	tags = g_array_new(FALSE, FALSE, sizeof(char*));
     	fprintf(fd,"%s","Tags:");
 	}
 }	//Começa a Start Condition TAGS
 
 <NEWS>"tag:{"[^}]*"}"			{
 	if(article <= lim){
-		printf("aqui n chega\n");
 		yytext[yyleng-1]='\0';
 		fprintf(fd," %s",yytext+5);
-		//char *tag = strdup(yytext+5);
-		GString *s = g_string_new(yytext+5);
-		g_array_append_val(tags,s);
-		//free(tags);
+		char* insert = yytext+5;
+		g_array_append_val(tags,insert);
 		nTags++;
 
-
-		char *tag2 = strdup(yytext+5);
-		int key= g_str_hash(tag2);
-		gint * gkey = g_new(gint,1);
-		*gkey = key;
-		TAG res;
-
-		if(!g_hash_table_lookup(hash, gkey)){
-			TAG u=create_user(tag2,1);
-			g_hash_table_insert (hash, gkey , u);
+		char* toI = strdup(yytext+5);
+		if(!g_hash_table_lookup(hash, toI)){
+			g_hash_table_insert (hash, toI, gi_to_ptr(1));
 		}
-			else {
-			res = g_hash_table_lookup(hash, gkey);
-			set(res);
-			g_hash_table_steal (hash, gkey);
-			g_hash_table_insert (hash, gkey , res);
-
-
+		else {
+			gint* res = g_hash_table_lookup(hash,toI);
+			int toAdd = gp_to_int(res)+1;
+			g_hash_table_steal(hash,toI);
+			g_hash_table_insert (hash,toI,gi_to_ptr(toAdd));
 		}
-
-
 	}
 
 
@@ -119,18 +107,17 @@ dig [0-9]
 
 <NEWS>"#ID:{post-"[^ ]+			{
 	if(article <= lim){
-		printf("Do id\n");
-		temp = (char *) malloc(sizeof(yytext+5));
-		strcpy(temp, yytext+5);
-
-		if(g_hash_table_add(idPosts, temp) == TRUE){
+		if(!g_tree_lookup(idPosts,yytext+5)){
+			g_tree_insert(idPosts,strdup(yytext+5),NULL);
 			BEGIN ID;
-			//GString *tag;
 
-			char *fileName = yytext+5;
+			char *fileName = malloc((strlen(yytext+5)+strlen(fileType)+1)*sizeof(char));
+			fileName[0] = '\0';
+			strcat(fileName,yytext+5);
 			strcat(fileName, fileType);
+			strcat(fileName,"\0");
 
-			char *dir = (char *) malloc(100);
+			char *dir = (char *) malloc((strlen(fileName)+strlen("html/")+1)*sizeof(char));
 			dir[0] = '\0';
 			strcat(dir, "html/");
 			strcat(dir, fileName);
@@ -138,6 +125,7 @@ dig [0-9]
 			html = fopen(dir,"w"); //ficheiro .html que contem um post
 			fprintf(html, "<pub id=\"%s\">\n", yytext+5);
 
+			free(fileName);
 			free(dir);
 			free(temp);
 		}
@@ -151,11 +139,10 @@ dig [0-9]
 <CATEGORY>^(.)*					{
 	if(article <= lim){
 		printf("Categoria: %s\n", yytext);
-		category = strdup(yytext);
-		char* toWrite = malloc(strlen(yytext) + strlen("\nCategoria: "));
+		char* toWrite = malloc((strlen(yytext) + strlen("\nCategoria: ")+1)*sizeof(char));
 		toWrite[0] = '\0';
 		strcat(toWrite,"\nCategoria: ");
-		strcat(toWrite,category);
+		strcat(toWrite,yytext);
 		strcat(toWrite,"\0");
 		fprintf(fd,"%s",toWrite);
 		free(toWrite);
@@ -166,15 +153,13 @@ dig [0-9]
 <TITLE>^(.)*					{
 	if(article <= lim){
 		fprintf(html,"<title>%s</title>\n",yytext);
-		char* toW = malloc((strlen(yytext) + strlen("\nTitulo: ")));
+		char* toW = malloc((strlen(yytext) + strlen("\nTitulo: ")+1)*sizeof(char));
 		toW[0] = '\0';
 		strcat(toW,"\nTitulo: ");
-		strcat(toW,strdup(yytext));
+		strcat(toW,yytext);
 		strcat(toW,"\0");
 		fprintf(fd,"%s",toW);
-		printf("Oi\n");
-		//free(toW);
-		printf("bye\n");
+		free(toW);
 		printf("Title: %s", yytext);
 		BEGIN DATE;
 
@@ -188,14 +173,15 @@ dig [0-9]
 	yytext[yyleng-1]='\0';
 	fprintf(html, "\t<author_data>%s</author_date>\n", yytext+14); //imprime a data
 	fprintf(html, "\t<tags>\n\t\t");
+	printf("nTags: %d\n",nTags);
 	for(int i = 0; i < nTags; i++){
-			GString *tag = g_array_index(tags,GString *, i);
-			fprintf(html, "<tag>%s</tag> ", tag->str);
+			printf("str:%s\n",g_array_index(tags, char*, i));
+			fprintf(html, "<tag>%s</tag> ", g_array_index(tags, char*, i));
 	}
 	fprintf(html, "\n\t</tags>\n");
 	fprintf(html, "\t<category>%s</category>\n\t<text>\n", category);
-	nTags = 0;
 	BEGIN NEWS;
+	printf("news\n");
 
 }	//Imprime a data da notícia, autor e começa a Start Condition NEWS, Imprime as tags no ficheiro HTMl correspondente
 
@@ -207,10 +193,7 @@ dig [0-9]
 	if(article <= lim){
 		fprintf(fd,"%s", yytext);
 		printf("%s",yytext);
-		printf("Oi\n");
 		fprintf(html,"%s", yytext);
-		printf("XAU\n");
-		//printf("Passa daqui\n");
 	}
 }
 
@@ -231,43 +214,87 @@ int main(int argc, char *argv[]){
 	yyin=fopen(argv[1],"r");
 
 	lim = atoi(argv[2]);
-	hash = g_hash_table_new_full (g_str_hash, g_str_equal,g_free,NULL);
 
-	idPosts = g_hash_table_new_full (g_str_hash, g_str_equal,g_free,NULL);
+	hash = g_hash_table_new_full (g_str_hash,g_str_equal,free,NULL);
+
+	idPosts = g_tree_new_full((GCompareDataFunc)g_ascii_strcasecmp,NULL,free,NULL);
 
  	yylex();
 
+	char *fileName1 = malloc((strlen("lista_tags")+ strlen(fileType)+1)*sizeof(char));
+	fileName1[0]='\0';
+	strcat(fileName1, "lista_tags");
+	strcat(fileName1, fileType);
+	html1 = fopen(fileName1,"a");
+	free(fileName1);
+
+
 	GHashTableIter iter;
 	gpointer key1;
-	TAG value1;
+	gpointer value1;
 
-		char *fileName1 = malloc((strlen("lista_tags")+ strlen(fileType))*sizeof(char));
-		fileName1[0]='\0';
-		strcat(fileName1, "lista_tags");
-		strcat(fileName1, fileType);
-		html1 = fopen(fileName1,"a");
+
+	g_hash_table_iter_init (&iter, hash);
+	while (g_hash_table_iter_next (&iter, &key1, (gpointer) &value1)){
+		if(value1!=NULL){
+			int lol1 = gp_to_int(value1);
+			fprintf(html1, "Elem:%s -> %d\n", (gchar*) key1, lol1);  // esta é linha que dá merda !!!!!!
+			printf("Elem:%s -> %d\n", (gchar*) key1, lol1);  // esta é linha que dá merda !!!!!!
+		}
+	}
+
+	g_hash_table_destroy(hash);
+
+	g_tree_destroy(idPosts);
+
+
+
+/*
+    GHashTableIter iter;
+    int size=g_hash_table_size(hash);
+    printf("First size: %d\n", size);
+
+
+    //uint32_t *val;
+    //uint32_t *key_;
+	char* key1;
+	int value1;
+
+    // My problem is in the following loop
+    // it always returns the same and the last key value pair
+
+    g_hash_table_iter_init (&iter, hash);
+    while (g_hash_table_iter_next (&iter, (gpointer) &key1, (gpointer) &value1)) printf("key %s ---> %d\n", (char*) key1, gp_to_int(value1));
+
+
+	GHashTableIter iter;
+	char* key1;
+	gpointer value1;
+
 
 		g_hash_table_iter_init (&iter, hash);
-		while (g_hash_table_iter_next (&iter, &key1, (gpointer) &value1))
-		  {
+		while (g_hash_table_iter_next (&iter, &key1, (gpointer) &value1)){
 				if(value1!=NULL){
-					int lol1 = get_num(value1);
-					char* tag=get_nome(value1);
+					int lol1 = gp_to_int(value1);
 
-					if(html1 && tag && lol1){
+					if(html1 && key1 && lol1){
 						//printf("nº -> %d\n", lol1);
 						//printf("tagº -> %s\n", tag);
-						 fprintf(html1, "Elem:%s -> %d\n", tag,lol1);  // esta é linha que dá merda !!!!!!
+						fprintf(html1, "Elem:%s -> %d\n", key1,lol1);  // esta é linha que dá merda !!!!!!
 					}
+					//free(tag);
 				}
-		  }
+		}
+	//free(fileType);
+	//free(id);
+	//free(author);
+	//free(category);
+*/
 
-	g_hash_table_destroy (hash);
-	g_hash_table_destroy (idPosts);
 	fclose(html1);
 
-
 	unlink("lixo.html");
+
   	fclose(fd);
 
 	return 0;
