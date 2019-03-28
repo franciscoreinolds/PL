@@ -4,10 +4,6 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include "free.h"
-#include "common.h"
-#include "tag.h"
-#include "tag.c"
-#include "common.c"
 #include <sys/stat.h>
 
 #define gp_to_int(p) ((gint)  (glong) (p))
@@ -16,6 +12,7 @@
 int article = 0;
 int lim = 0;
 int nTags = 0; // Representa o número de tags de um post
+int flag = 0;
 FILE* 		fd = NULL;
 FILE*	    html = NULL;
 FILE*	    html1 = NULL;
@@ -30,7 +27,7 @@ char 		*temp; // apontador temporário usado para escrever as tags na hash table
 GString 	*text;
 GHashTable	*hash;
 GTree	*idPosts;
-GArray *tags;
+GPtrArray *tags;
 
 %}
 
@@ -54,7 +51,6 @@ dig [0-9]
 		fprintf(fd,"%s%d%s", "Artigo nº",article,"\n");
 		html = fopen("lixo.html", "w");
 		BEGIN NEWS;
-		printf("news begun\n");
 	}
 }	//Começa a Start Condition NEWS
 
@@ -64,11 +60,10 @@ dig [0-9]
 		fclose(html);
 		printf("Fim do artigo nº%d\n\n",article);
 		fprintf(fd,"%s%d%s", "Fim do artigo nº",article,"\n\n");
-		if(nTags == 0) {
-			//g_array_free(tags, FALSE);
+		if(!nTags) {
+			g_ptr_array_free(tags,TRUE);
+			flag = 0;
 		}
-		else g_array_free(tags, TRUE);
-		//free(dir);
 		BEGIN INITIAL;
 		nTags = 0;
 	}
@@ -76,8 +71,11 @@ dig [0-9]
 
 <NEWS>"#TAG: "					{
 	if(article <= lim){
-			printf("Array initialization\n");
-    	tags = g_array_new(FALSE, FALSE, sizeof(char*));
+		printf("Array initialization\n");
+    	if (!flag) {
+    		tags = g_ptr_array_new_with_free_func(free);
+    		flag = 1;
+    	}
     	fprintf(fd,"%s","Tags:");
 	}
 }	//Começa a Start Condition TAGS
@@ -85,9 +83,9 @@ dig [0-9]
 <NEWS>"tag:{"[^}]*"}"			{
 	if(article <= lim){
 		yytext[yyleng-1]='\0';
+		printf("Actual tag: %s\n",yytext+5);
 		fprintf(fd," %s",yytext+5);
-		char* insert = yytext+5;
-		g_array_append_val(tags,insert);
+		g_ptr_array_add(tags,strdup(yytext+5));
 		nTags++;
 
 		char* toI = strdup(yytext+5);
@@ -100,6 +98,7 @@ dig [0-9]
 			g_hash_table_steal(hash,toI);
 			g_hash_table_insert (hash,toI,gi_to_ptr(toAdd));
 		}
+		//free(toI);
 	}
 
 
@@ -175,8 +174,8 @@ dig [0-9]
 	fprintf(html, "\t<tags>\n\t\t");
 	printf("nTags: %d\n",nTags);
 	for(int i = 0; i < nTags; i++){
-			printf("str:%s\n",g_array_index(tags, char*, i));
-			fprintf(html, "<tag>%s</tag> ", g_array_index(tags, char*, i));
+			printf("strPtr:%s\n", (gchar *) g_ptr_array_index(tags, i));
+			fprintf(html, "<tag>%s</tag> ", (gchar*) g_ptr_array_index(tags, i));
 	}
 	fprintf(html, "\n\t</tags>\n");
 	fprintf(html, "\t<category>%s</category>\n\t<text>\n", category);
