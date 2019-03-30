@@ -9,24 +9,25 @@
 #define gp_to_int(p) ((gint)  (glong) (p))
 #define gi_to_ptr(i) ((gpointer) (glong) (i))
 
-int article = 0;
-int lim = 0;
-int nTags = 0; // Representa o número de tags de um post
-int flag = 0;
-int repeated = 0;
+int article = 0;	// Contador do número do artigo atual
+int lim = 0;		// Número de artigos a processar
+int nTags = 0; 		// Número de tags de um post
+int flag = 0;		//
+int repeated = 0;	// Flag para identificar posts repetidos
 
-FILE* 		fd = NULL;
-FILE*	    html = NULL;
-FILE*	    html1 = NULL;
-char		*fileName = "";
-char		*fileType = ".html";
-char 		*id       = "";
-char 		*title    = "";
-char 		*category = "";
-char		*directory = "";
-GHashTable	*hash;
-GTree	*idPosts;
-GPtrArray *tags;
+FILE* 		fd = NULL;				// Apontador para o ficheiro que contém os artigos normalizados
+FILE*	    html = NULL;			// Apontador para o ficheiro html do artigo atual
+FILE*	    html1 = NULL;			// Apontador para o ficheiro html das tags
+char		*fileName = "";			// String que guard o nome do ficheiro a ser criado, i.e. "post-1643"
+char		*fileType = ".html";	// String que guarda a extensão dos ficheiro a serem criados
+char 		*id       = "";			// String que guarda o id of artigo atual
+char 		*title    = "";			// String que guarda o título do artigo atual
+char 		*category = "";			// String que guarda a categoria do artigo atual
+char		*directory = "";		// String que guarda a diretoria onde são colocados os ficheiros
+
+GHashTable	*hash;					// Estrutura que 
+GTree		*idPosts;				// Estrutura que 
+GPtrArray 	*tags;					// Estrutura que  
 %}
 
 letter [a-zA-Z0-9]
@@ -43,50 +44,50 @@ dig [0-9]
 
 "<pub>"			 				{
 	article++;
-	if(article <= lim){
+	if(article <= lim){		//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar
 		fprintf(fd,"%s%d%s", "Artigo nº",article,"\n");
 		html = fopen("lixo.html", "w");
 		BEGIN NEWS;
 	}
-}	//Começa a Start Condition NEWS
+}	//ínicio de cada artigo, inicia a start condition "NEWS"
 
 <NEWS>"</pub>" 					{
-	if(article <= lim){
+	if(article <= lim){		//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar
 		fprintf(html, "\t</text>\n</pub>");
-		fclose(html);
+		fclose(html);	//Fecha o ficheiro html do artigo atual
 		fprintf(fd,"%s%d%s", "Fim do artigo nº",article,"\n\n");
-		if(nTags > 0) {
+		if(nTags > 0) {		//Dá free ao array que guarda as tags de um post
 			g_ptr_array_free(tags,TRUE);
 			flag = 0;
 		}
 		BEGIN INITIAL;
-		nTags = 0;
+		nTags = 0;	//Reset ao contador de tags e á flag de artigos repetido, pois vai-se iniciar um artigo novo
 		repeated = 0;
 	}
-}	//Começa a Start Condition INITIAL
+}	//Fim de cada artigo, retorna á start condition á inicial
 
 <NEWS>"#TAG: "					{
-	if(article <= lim){
+	if(article <= lim){		//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar
     	if (!flag) {
-    		tags = g_ptr_array_new_with_free_func(free);
+    		tags = g_ptr_array_new_with_free_func(free);	//Cria o array para armazenar as tags
     		flag = 1;
     	}
-    	fprintf(fd,"%s","Tags:");
+    	fprintf(fd,"%s","Tags:");	//Imprime no ficheiro normalizado
 	}
-}	//Começa a Start Condition TAGS
+}	//Aciona a flag que indica que o artigo possui tags
 
 <NEWS>"tag:{"[^}]*"}"			{
-	if(article <= lim){
+	if(article <= lim){ 	//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar
 		yytext[yyleng-1]='\0';
 		fprintf(fd," %s",yytext+5);
 		if (strchr(yytext+5, '/')) removeChar(yytext+5,'/');
-		g_ptr_array_add(tags,strdup(yytext+5));
-		nTags++;
+		g_ptr_array_add(tags,strdup(yytext+5));		//Adiciona a tag ao array
+		nTags++;			//Incrementa o contador de tags
 	}
-}	//Coloca as Tags num array
+}	//Coloca as Tags no array e incrementa o contador de tags
 
 <NEWS>"#ID:{post-"[^ ]+			{
-	if(article <= lim){
+	if(article <= lim){		//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar
 		if(g_tree_lookup(idPosts,yytext+5)) repeated = 1;
 		if(!repeated){
 			g_tree_insert(idPosts,strdup(yytext+5),strdup(yytext+5));
@@ -125,7 +126,7 @@ dig [0-9]
 } //Imprime info relacionada com ID e começa a Start Condition CATEGORY
 
 <CATEGORY>^(.)*					{
-	if(article <= lim && !repeated){
+	if(article <= lim && !repeated){	//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar e se não se trata de um artigo repetido
 		char* toWrite = malloc((strlen(yytext) + strlen("\nCategoria: ")+1)*sizeof(char));
 		category = strdup(yytext);
 		toWrite[0] = '\0';
@@ -139,7 +140,7 @@ dig [0-9]
 } //Imprime a categoria da notícia e começa a Start Condition TITLE
 
 <TITLE>^(.)*					{
-	if(article <= lim && !repeated){
+	if(article <= lim && !repeated){	//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar e se não se trata de um artigo repetido
 		fprintf(html,"<title>%s</title>\n",yytext);
 		char* toW = malloc((strlen(yytext) + strlen("\nTitulo: ")+1)*sizeof(char));
 		title=strdup(yytext);
@@ -159,7 +160,7 @@ dig [0-9]
 <DATE>[^#]		{;} //Ignora a barra gigante e o "PARTILHE VIA" antes da data
 
 <DATE>"#DATE: ["[^]]*"]".*		{
-	if (article <= lim && !repeated) {
+	if (article <= lim && !repeated) {	//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar e se não se trata de um artigo repetido
 		yytext[yyleng-1]='\0';
 		fprintf(html, "\t<author_data>%s</author_date>\n", yytext+14); //imprime a data
 		fprintf(html, "\t<tags>\n\t\t");
@@ -198,7 +199,7 @@ dig [0-9]
 <NEWS>\[.*] 					{;} //Ignora as [aaa16] que se encontram antes do corpo das notícias
 
 <NEWS>.|\n						{
-	if(article <= lim && !repeated){
+	if(article <= lim && !repeated){	//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar e se não se trata de um artigo repetido
 		fprintf(fd,"%s", yytext);
 		fprintf(html,"%s", yytext);
 	}
@@ -214,11 +215,11 @@ int yywrap(){
 
 int main(int argc, char *argv[]){
 
-	fd = fopen("normalized.txt","w");
+	fd = fopen("normalized.txt","w"); // Abre o ficheiro onde vão ser inseridos os artigos normalizados
 
-	yyin=fopen(argv[1],"r");
+	yyin=fopen(argv[1],"r"); // O nome do ficheiro .txt a processar
 
-	lim = atoi(argv[2]);
+	lim = atoi(argv[2]); // O número de artigos a ser processados
 
 	hash = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
 
