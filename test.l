@@ -60,10 +60,10 @@ dig [0-9]
 			flag = 0;
 		}
 		BEGIN INITIAL;
-		nTags = 0;	//Reset ao contador de tags e á flag de artigos repetido, pois vai-se iniciar um artigo novo
+		nTags = 0;	//Reset ao contador de tags e à flag de artigos repetido, pois vai-se iniciar um artigo novo
 		repeated = 0;
 	}
-}	//Fim de cada artigo, retorna á start condition á inicial
+}	//Fim de cada artigo, retorna à start condition á inicial
 
 <NEWS>"#TAG: "					{
 	if(article <= lim){		//Verifica se o artigo ainda se encontra dentro do número máximo de artigos a processar
