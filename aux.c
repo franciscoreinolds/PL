@@ -1,4 +1,4 @@
-#include<stdio.h>
+#include "aux.h"
 #define gp_to_int(p) ((gint)  (glong) (p))
 #define gi_to_ptr(i) ((gpointer) (glong) (i))
 

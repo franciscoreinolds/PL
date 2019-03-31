@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "free.h"
 #include <sys/stat.h>
+#include "aux.h"
 
 #define gp_to_int(p) ((gint)  (glong) (p))
 #define gi_to_ptr(i) ((gpointer) (glong) (i))
@@ -80,6 +80,9 @@ dig [0-9]
 		yytext[yyleng-1]='\0';
 		fprintf(fd," %s",yytext+5);
 		if (strchr(yytext+5, '/')) removeChar(yytext+5,'/');
+		if (strchr(yytext+5, '\n')) removeChar(yytext+5,'\n');
+		if (strchr(yytext+5, ' ')) removeChar(yytext+5,' ');
+
 		g_ptr_array_add(tags,strdup(yytext+5));		//Adiciona a tag ao array
 		nTags++;			//Incrementa o contador de tags
 	}
