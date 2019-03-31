@@ -12,7 +12,7 @@
 int article = 0;	// Contador do número do artigo atual
 int lim = 0;		// Número de artigos a processar
 int nTags = 0; 		// Número de tags de um post
-int flag = 0;		//
+int flag = 0;		// Flag que indica se o GPtrArray pode ser freed ou não
 int repeated = 0;	// Flag para identificar posts repetidos
 
 FILE* 		fd = NULL;				// Apontador para o ficheiro que contém os artigos normalizados
@@ -20,14 +20,13 @@ FILE*	    html = NULL;			// Apontador para o ficheiro html do artigo atual
 FILE*	    html1 = NULL;			// Apontador para o ficheiro html das tags
 char		*fileName = "";			// String que guard o nome do ficheiro a ser criado, i.e. "post-1643"
 char		*fileType = ".html";	// String que guarda a extensão dos ficheiro a serem criados
-char 		*id       = "";			// String que guarda o id of artigo atual
 char 		*title    = "";			// String que guarda o título do artigo atual
 char 		*category = "";			// String que guarda a categoria do artigo atual
 char		*directory = "";		// String que guarda a diretoria onde são colocados os ficheiros
 
-GHashTable	*hash;					// Estrutura que 
-GTree		*idPosts;				// Estrutura que 
-GPtrArray 	*tags;					// Estrutura que  
+GHashTable	*hash;					// Estrutura utilizada para monitorizar o número de ocorrências de cada tag
+GTree		*idPosts;				// Estrutura utilizada para monitorizar que posts já foram processados
+GPtrArray 	*tags;					// Estrutura utilizada para monitorizar que tags são utilizadas em cada post
 %}
 
 letter [a-zA-Z0-9]
@@ -98,8 +97,6 @@ dig [0-9]
 			strcat(fileName,yytext+5);
 			strcat(fileName, fileType);
 			strcat(fileName,"\0");
-
-			id = strdup(fileName);
 
 			char *dir = (char *) malloc((strlen(fileName)+strlen("html/")+1)*sizeof(char));
 			dir[0] = '\0';
@@ -186,8 +183,6 @@ dig [0-9]
 		category = "";
 		free(directory);
 		directory = "";
-		free(id);
-		id = "";
 		free(title);
 		title="";
 	}
