@@ -61,7 +61,7 @@ lhe	des	96b	ele	PERS	DAT	3S	M/F	DAT>	0	0	0
 dissipou	des	96b	dissipar	V	PS_IND	3S	0	FS-N<	0	0	0
 <mwe pos=DET>	
 todas	des	96b	todo	DET_quant	0	S	M	>N	0	0	0
-as	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+as	des	96b	o	DET_artd	0	S	M	>N	0	0	0	
 </mwe>	
 dúvidas	des	96b	dúvida	N	0	P	F	<ACC	0	0	0
 .	des	96b	.	PU	0	0	0	PONT	0	0	0
