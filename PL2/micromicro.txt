@@ -1,0 +1,199 @@
+<ext n=1665 sec=des sem=96b>	
+<p par=ext1665-des-96b-1>	
+<s>	
+Com	des	96b	com	PRP	0	0	0	ADVL>	0	0	0
+16	des	96b	16	NUM_card	0	P	M	>N	0	0	0
+tiros	des	96b	tiro	N	0	P	M	P<	0	0	0
+certeiros	des	96b	certeiro	ADJ	0	P	M	N<	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+vulgo	des	96b	vulgo	ADV	0	0	0	>N	0	0	0
+ases	des	96b	ás	N	0	P	M	APP	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+Ivanisevic	des	96b	Ivanisevic	PROP	0	S	M/F	SUBJ>	0	0	0
+eliminou	des	96b	eliminar	V	PS_IND	3S	0	FMV	0	0	0
+o	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+australiano	des	96b	australiano	N	0	S	M	<ACC	0	0	0
+Mark	des	96b	Mark=Woodforde	PROP	0	S	M	N<	0	0	0
+Woodforde	des	96b	Mark=Woodforde	PROP	0	S	M	N<	0	0	0
+(	des	96b	(	PU	0	0	0	PONT	0	0	0
+27º	des	96b	27º	ADJ_NUMord	0	S	M	>N	0	0	0
+ATP	des	96b	ATP	PROP	0	S	M	N<	0	0	0
+)	des	96b	)	PU	0	0	0	PONT	0	0	0
+com	des	96b	com	PRP	0	0	0	<ADVL	0	0	0
+os	des	96b	o	DET_artd	0	P	M	>N	0	0	0
+parciais	des	96b	parcial	ADJ	0	P	M	P<	0	0	0
+de	des	96b	de	PRP	0	0	0	N<	0	0	0
+6-4	des	96b	6-4	NUM_card	0	P	M/F	P<	0	0	0
+,	des	96b	,	PU	0	0	0	CO	0	0	0
+6-4	des	96b	6-4	NUM_card	0	P	M/F	<ACC	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+em	des	96b	em	PRP	0	0	0	<ADVL	0	0	0
+66	des	96b	66	NUM_card	0	P	M	>N	0	0	0
+minutos	des	96b	minuto	N	0	P	M	P<	0	0	0
+.	des	96b	.	PU	0	0	0	PONT	0	0	0
+</s>	
+<s>	
+O	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+«	des	96b	« 	PU	0	0	0	PONT	0	0	0
+sniper	des	96b	sniper	N	0	S	M	SUBJ>	0	0	0
+»	des	96b	» 	PU	0	0	0	PONT	0	0	0
+croata	des	96b	croata	ADJ	0	S	M	N<	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+que	des	96b	que	SPEC_rel_clb-fs	0	S	M	ACC>	0	0	0
+este	des	96b	este	DET	0	S	M	>N	0	0	0
+ano	des	96b	ano	N	0	S	M	ADVL>	0	0	0
+ultrapassou	des	96b	ultrapassar	V	PS_IND	3S	0	FS-N<	0	0	0
+o	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+seu	des	96b	seu	DET_poss-3S_si	0	S	M	>N	0	0	0
+próprio	des	96b	próprio	ADJ	0	S	M	>N	0	0	0
+recorde	des	96b	recorde	N	0	S	M	<ACC	0	0	0
+de	des	96b	de	PRP	0	0	0	N<	0	0	0
+ases	des	96b	ás	N	0	P	M	P<	0	0	0
+(	des	96b	(	PU	0	0	0	PONT	0	0	0
+1495	des	96b	1495	NUM_year_date_card	0	P	M/F	N<PRED	0	0	0
+)	des	96b	)	PU	0	0	0	PONT	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+fez	des	96b	fazer	V	PS_IND	3S	0	FMV	0	0	0
+uma	des	96b	um	DET_arti	0	S	F	>N	0	0	0
+exibição	des	96b	exibição	N	0	S	F	<ACC	0	0	0
+que	des	96b	que	SPEC_rel_clb-fs	0	S	M	SUBJ>	0	0	0
+lhe	des	96b	ele	PERS	DAT	3S	M/F	DAT>	0	0	0
+dissipou	des	96b	dissipar	V	PS_IND	3S	0	FS-N<	0	0	0
+<mwe pos=DET>	
+todas	des	96b	todo	DET_quant	0	S	M	>N	0	0	0
+as	des	96b	o	DET_artd	0	S	M	>N	0	0	0	
+</mwe>	
+dúvidas	des	96b	dúvida	N	0	P	F	<ACC	0	0	0
+.	des	96b	.	PU	0	0	0	PONT	0	0	0
+</s>	
+<s>	
+«	des	96b	« 	PU	0	0	0	PONT	0	0	0
+Agora	des	96b	agora	ADV	0	0	0	ADVL>	0	0	0
+posso	des	96b	poder	V	PR_1S_VFIN	IND	0	FS-ACC>>	0	0	0
+dizer	des	96b	dizer	V-REGENTE	INF	3	0	ICL-AUX<	0	dizer_relatoMISTO	0
+que	des	96b	que	KS	0	0	0	SUB	0	0	0
+sou	des	96b	ser	V-REGIDO	PR_IND	1S	0	FS-<ACC	0	0	0
+o	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+melhor	des	96b	bom	ADJ	0	S	M	>N	0	0	0
+servidor	des	96b	servidor	N	0	S	M	<SC	0	0	0
+no	des	96b	em+o	PRP+DET_artd	0	S	M	N<+>N	0	0	0
+circuito	des	96b	circuito	N	0	S	M	P<	0	0	0
+»	des	96b	» 	PU	0	0	0	PONT	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+afirmou	des	96b	afirmar	V	PS_3S_VFIN	IND	0	FMV	0	dizer	0
+ele	des	96b	ele	PERS	NOM	3S	M	<SUBJ	0	0	0
+convencido	des	96b	convencer	V	PCP	S	M	<PRED	0	dizer	0
+.	des	96b	.	PU	0	0	0	PONT	0	0	0
+</s>	
+</p>	
+<p par=ext1665-des-96b-2>	
+<s>	
+«	des	96b	« 	PU	0	0	0	PONT	0	0	0
+O	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+serviço	des	96b	serviço	N	0	S	M	SUBJ>	0	0	0
+de	des	96b	de	PRP	0	0	0	N<	0	0	0
+Goran	des	96b	Goran	PROP	0	S	M	P<	0	0	0
+é	des	96b	ser	V	PR_3S_VFIN	IND	0	FS-ACC>>	0	0	0
+provavelmente	des	96b	provavelmente	ADV	0	0	0	<ADVL	0	emomax:esperanca	0
+um	des	96b	um	NUM_card	0	S	M	<SC	0	0	0
+dos	des	96b	de+o	PRP+DET_artd	0	P	M	N<+>N	0	0	0
+fenómenos	des	96b	fenômeno	N	0	P	M	P<	0	0	0
+do	des	96b	de+o	PRP+DET_artd	0	S	M	N<+>N	0	0	0
+ténis	des	96b	ténis	N	0	S	M	P<	0	0	0
+»	des	96b	» 	PU	0	0	0	PONT	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+concordou	des	96b	concordar	V	PS_3S_VFIN	IND	0	FMV	0	0	0
+Woodforde	des	96b	Woodforde	PROP	0	S	M/F	<SUBJ	0	0	0
+.	des	96b	.	PU	0	0	0	PONT	0	0	0
+</s>	
+<s>	
+Mais	des	96b	mais	ADV_quant	0	0	0	>A	0	0	0
+conhecido	des	96b	conhecer	V	PCP	S	M	NPHR	0	0	0
+pelos	des	96b	por+o	PRP+DET_artd	0	P	M	<PASS+>N	0	0	0
+seus	des	96b	seu	DET_poss-3S_si	0	P	M	>N	0	0	0
+sucessos	des	96b	sucesso	N	0	P	M	P<	0	0	0
+em	des	96b	em	PRP	0	0	0	N<	0	0	0
+pares	des	96b	par	N	0	P	M	P<	0	0	0
+--	des	96b	--	PU	0	0	0	PONT	0	0	0
+variante	des	96b	variante	N	0	S	F	SUBJ>	0	0	0
+<mwe pos=SPEC>	
+na	des	96b	em+o	PRP+DET_artd	0	S	M	ADVL>+>N	0	0	0
+qual	des	96b	qual	DET_rel	0	S	M/F	P<	0	0	0
+</mwe>	
+conquistou	des	96b	conquistar	V	PS_IND	3S	0	FS-N<	0	0	0
+este	des	96b	este	DET	0	S	M	>N	0	0	0
+ano	des	96b	ano	N	0	S	M	<ADVL	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+<mwe pos=PRP>	
+ao	des	96b	a+o	PRP+DET_artd	0	S	M	<ADVL+>N	0	0	0
+lado	des	96b	lado	N	0	S	M	P<	0	0	0
+</mwe>	
+do	des	96b	de+o	PRP+DET_artd	0	S	M	N<+>N	0	0	0
+seu	des	96b	seu	DET_poss-3S_si	0	S	M	>N	0	0	0
+compatriota	des	96b	compatriota	N	0	S	M	P<	0	0	0
+Todd	des	96b	Todd=Woodbridge	PROP	0	S	M	N<	0	0	0
+Woodbridge	des	96b	Todd=Woodbridge	PROP	0	S	M	N<	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+o	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+Open	des	96b	Open=dos=Eua	PROP	0	S	M	<ACC	0	0	0
+dos	des	96b	Open=dos=Eua	PROP	0	S	M	<ACC	0	0	0
+Eua	des	96b	Open=dos=Eua	PROP	0	S	M	<ACC	0	0	0
+,	des	96b	,	PU	0	0	0	CO	0	0	0
+a	des	96b	o	DET_artd	0	S	F	>N	0	0	0
+medalha	des	96b	medalha	N	0	S	F	<ACC	0	0	0
+de	des	96b	de	PRP	0	0	0	N<	0	0	0
+ouro	des	96b	ouro	N	0	S	M	P<	0	0	0
+nos	des	96b	em+o	PRP+DET_artd	0	P	M	<ADVL+>N	0	0	0
+Jogos	des	96b	Jogos=de=Atlanta	PROP	0	P	M	P<	0	0	0
+de	des	96b	Jogos=de=Atlanta	PROP	0	P	M	P<	0	0	0
+Atlanta	des	96b	Jogos=de=Atlanta	PROP	0	P	M	P<	0	0	0
+e	des	96b	e	KC	0	0	0	CO	0	0	0
+o	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+Masters	des	96b	master	ADJ	0	P	M	<ACC	0	0	0
+--	des	96b	--	PU	0	0	0	PONT	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+o	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+australiano	des	96b	australiano	N	0	S	M	SUBJ>	0	0	0
+reconheceu	des	96b	reconhecer	V	PS_IND	3S	0	FMV	0	0	0
+a	des	96b	o	DET_artd	0	S	F	>N	0	0	0
+dificuldade	des	96b	dificuldade	N	0	S	F	<ACC	0	0	0
+de	des	96b	de	PRP	0	0	0	N<	0	0	0
+defrontar	des	96b	defrontar	V	INF	3	0	ICL-P<	0	0	0
+Ivanisevic	des	96b	Ivanisevic	PROP	0	S	M/F	<ACC	0	0	0
+quando	des	96b	quando	ADV_ks_rel_clb-fs	0	0	0	ADVL>	0	0	0
+este	des	96b	este	DET	0	S	M	SUBJ>	0	0	0
+está	des	96b	estar	V	PR_IND	3S	0	FS-<ADVL	0	0	0
+com	des	96b	com	PRP	0	0	0	<SC	0	0	0
+a	des	96b	o	DET_artd	0	S	F	>N	0	0	0
+pontaria	des	96b	pontaria	N	0	S	F	P<	0	0	0
+afinada	des	96b	afinado	ADJ	0	S	F	N<	0	0	0
+.	des	96b	.	PU	0	0	0	PONT	0	0	0
+</s>	
+<s>	
+«	des	96b	« 	PU	0	0	0	PONT	0	0	0
+Só	des	96b	só	ADV	0	0	0	ADVL>	0	0	0
+tento	des	96b	tentar	V	PR_1S_VFIN	IND	0	FS-ACC>>	0	0	0
+devolver	des	96b	devolver	V	INF	3	0	ICL-<ACC	0	0	0
+a	des	96b	o	DET_artd	0	S	F	>N	0	0	0
+bola	des	96b	bola	N	0	S	F	<ACC	0	0	0
+<mwe pos=PRP>	
+por	des	96b	por	PRP	0	0	0	N<	0	0	0
+cima	des	96b	cima	N	0	S	F	P<	0	0	0
+</mwe>	
+da	des	96b	de+o	PRP+DET_artd	0	S	F	N<+>N	0	0	0
+rede	des	96b	rede	N_coll-sem_Lh_furn_HH_con	0	S	F	P<	0	0	0
+<mwe pos=N>	
+o	des	96b	o	DET_artd	0	S	M	>N	0	0	0
+maior	des	96b	grande	ADJ	0	S	M/F	>N	0	0	0
+número	des	96b	número	N	0	S	M	<ACC	0	0	0
+</mwe>	
+de	des	96b	de	PRP	0	0	0	N<	0	0	0
+vezes	des	96b	vez	N	0	P	F	P<	0	0	0
+possível	des	96b	possível	ADJ	0	S	F	N<	0	0	0
+»	des	96b	» 	PU	0	0	0	PONT	0	0	0
+,	des	96b	,	PU	0	0	0	PONT	0	0	0
+confessou	des	96b	confessar	V	PS_3S_VFIN	IND	0	FMV	0	dizer	0
+.	des	96b	.	PU	0	0	0	PONT	0	0	0
+</s>	
+</p>	
+</ext>

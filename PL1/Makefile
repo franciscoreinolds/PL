@@ -1,5 +1,5 @@
 prog: lex.yy.c
-	gcc lex.yy.c -g `pkg-config --cflags --libs glib-2.0` -o prog
+	gcc lex.yy.c aux.c -g `pkg-config --cflags --libs glib-2.0` -o prog
 	mkdir html
 	mkdir tags
 	rm lex.yy.c
