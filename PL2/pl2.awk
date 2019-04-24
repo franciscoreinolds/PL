@@ -19,7 +19,7 @@ BEGIN     {
 END     {
             #for(mwe in aux) print mwe " -> " aux[mwe];
 	    for (i in aux) {
-				for(j in verbos[i]) printf("%s ",j);
+				for(j in aux[i]) printf("%s ",j);
 				printf("\n");
 				
 }
