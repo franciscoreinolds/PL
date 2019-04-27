@@ -7,7 +7,6 @@ BEGIN 	{
 
         {
             if($1=="<s>")   sentences++;
-            #if($1=="")
             if(match($1,/<p par=.+>/)){paragraphs++;}
             if(match($1,/<ext .+>/)){extracts++;}
         }
