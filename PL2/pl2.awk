@@ -15,7 +15,7 @@ BEGIN     {
 				if(t==0) var=word;
 				else var=final " " word;
 				final=var;
-				t++;s
+				t++;
 			 };
 
 			 for (word in string) delete string[word];
