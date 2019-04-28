@@ -11,5 +11,5 @@ BEGIN 	{
  
 END 	{
 			for(verb in verbos) print verb " -> " verbos[verb];
-			printf("Oi\n");
+			
 		}
