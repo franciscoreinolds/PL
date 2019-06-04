@@ -7,7 +7,7 @@ BEGIN 	{
 	#awk -f pl4.awk < micro-Cetempublico01.txt | nl > resultado.txt
 	
 	{
-		if(substr($1,0,1) != "<") verbos[$1][$4][$5];
+		$1 !~/^</ {verbos[$1][$4][$5];}
 	}
  
 END 	{
