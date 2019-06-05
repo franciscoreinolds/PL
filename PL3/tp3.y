@@ -1,67 +1,51 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
 int yylex();
-int alunoA;
-int contaA;
-int contaN;
+int concs = 0;
 void yyerror(char *s);
 %}
 %union {char* string;}
-%token TURMA_INICIO
-%token INICIO_LISTA FIM_LISTA
-%token <string >ID 
-%token <string> NOME
-%token <string> NOTA
-%type <string > CodAl 
+%token Program_Beginning
+%token LANGUAGES
+%token <string> ID
 %%
 
-	/*
-	Uma turma tem um início, um ID e Alunos.
-	Ele começa a processar a turma e dentro disso, processa alunos, etc...
-	Por isso metemos o printf final aqui, já que isto é a última coisa a ser processada
-	*/
+Program : LANGUAGES TRANS_LANGS BASE_LANG INV CONCEPTS
 
+TRANS_LANGS : ID {printf("TRANS_LANGS: %s FIM\n",$1);}
+			;
 
-conceito : CONCEITO TRANSLATIONS CONNECTIONS
+BASE_LANG 	: ID {printf("BASE_LANG: %s FIM\n",$1);}
+		  	;
 
-turma : TURMA_INICIO CodTurma Alunos {printf("Existem: %d alunos na turma.\n",contaA);}
-	  ;																			  
+INV : ID {printf("INV: %s\n",$1);}
+	;
 
-CodTurma : ID
-         ;
-
-Alunos: Aluno {contaA =1;}
-	  | Alunos Aluno {contaA++;}
-	  ;
+CONCEPTS : ID {printf("CONCEPTS: %s\n",$1);}
 
 	/*
-	Um aluno tem id, nome e uma lista de notas.
-	OU
-	Um aluno tem id e uma lista de notas.
+	LANGUAGES : TRANS_LANGS BASELANG INVERSE
+
+	TRANS_LANGS : {printf("trans_lang:%s\n",$0);}
+				| {printf("trans_langss:%s\n",$0);}
+				;
+
+	BASELANG : {printf("base_lang:%s\n",$0);}
+			 ;
+
+	INVERSE : {printf("inv1,inv2:%s\n",$0);}
+			;
+
+	CONCEPTS : Concept 				{concs++;}
+			 | Concept CONCEPTS		{concs++;}
+			 ;
+
+	Concept : BASE_TERM
+
+	BASE_TERM : {printf("base_term:%s\n",$0);}
+		  ;
 	*/
-
-Aluno: CodAl NOME LNotas {printf("O aluno %s tem %d notas\n",$1,contaN);}
-	 | CodAl LNotas 	  {printf("O aluno %d tem %d notas\n",contaA+1,contaN);}
-	 ;
-
-CodAl : ID {$$=$1;}
-      ;
-
-	/*
-	Uma lista de notas tem um início, NOTAS e fim.
-	*/
-
-LNotas: INICIO_LISTA Notas FIM_LISTA
-
-	/*
-	Uma NOTAS é uma nota.
-	OU
-	Uma NOTAS é uma NOTA com mais NOTAS.
-	*/
-
-Notas: NOTA {contaN = 1;}
-	 | Notas ',' NOTA {contaN++;}
-	 ;
 %%
 
 #include "lex.yy.c"
@@ -69,8 +53,9 @@ Notas: NOTA {contaN = 1;}
 void yyerror(char* s){
 	printf("Erro sintático %s\n",s);
 }
-
+/*
 int main(){
 	yyparse();
 	return(0);
 }
+*/

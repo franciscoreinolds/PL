@@ -1,0 +1,137 @@
+Terminals unused in grammar
+
+   Program_Beginning
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: LANGUAGES TRANS_LANGS BASE_LANG INV CONCEPTS
+
+    2 TRANS_LANGS: ID
+
+    3 BASE_LANG: ID
+
+    4 INV: ID
+
+    5 CONCEPTS: ID
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+Program_Beginning (258)
+LANGUAGES (259) 1
+ID <string> (260) 2 3 4 5
+
+
+Nonterminals, with rules where they appear
+
+$accept (6)
+    on left: 0
+Program (7)
+    on left: 1, on right: 0
+TRANS_LANGS (8)
+    on left: 2, on right: 1
+BASE_LANG (9)
+    on left: 3, on right: 1
+INV (10)
+    on left: 4, on right: 1
+CONCEPTS (11)
+    on left: 5, on right: 1
+
+
+State 0
+
+    0 $accept: . Program $end
+
+    LANGUAGES  shift, and go to state 1
+
+    Program  go to state 2
+
+
+State 1
+
+    1 Program: LANGUAGES . TRANS_LANGS BASE_LANG INV CONCEPTS
+
+    ID  shift, and go to state 3
+
+    TRANS_LANGS  go to state 4
+
+
+State 2
+
+    0 $accept: Program . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    2 TRANS_LANGS: ID .
+
+    $default  reduce using rule 2 (TRANS_LANGS)
+
+
+State 4
+
+    1 Program: LANGUAGES TRANS_LANGS . BASE_LANG INV CONCEPTS
+
+    ID  shift, and go to state 6
+
+    BASE_LANG  go to state 7
+
+
+State 5
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+State 6
+
+    3 BASE_LANG: ID .
+
+    $default  reduce using rule 3 (BASE_LANG)
+
+
+State 7
+
+    1 Program: LANGUAGES TRANS_LANGS BASE_LANG . INV CONCEPTS
+
+    ID  shift, and go to state 8
+
+    INV  go to state 9
+
+
+State 8
+
+    4 INV: ID .
+
+    $default  reduce using rule 4 (INV)
+
+
+State 9
+
+    1 Program: LANGUAGES TRANS_LANGS BASE_LANG INV . CONCEPTS
+
+    ID  shift, and go to state 10
+
+    CONCEPTS  go to state 11
+
+
+State 10
+
+    5 CONCEPTS: ID .
+
+    $default  reduce using rule 5 (CONCEPTS)
+
+
+State 11
+
+    1 Program: LANGUAGES TRANS_LANGS BASE_LANG INV CONCEPTS .
+
+    $default  reduce using rule 1 (Program)
