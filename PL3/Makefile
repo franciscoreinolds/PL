@@ -1,13 +1,13 @@
 CC = gcc
 
-tp3: y.tab.c lex.yy.c
-	gcc y.tab.c -g `pkg-config --cflags --libs glib-2.0` -o tp3
+prog: y.tab.c lex.yy.c
+	gcc y.tab.c -g `pkg-config --cflags --libs glib-2.0` -o prog
 
-lex.yy.c: tp3.l
-	flex tp3.l
+lex.yy.c: prog.l
+	flex prog.l
 
-y.tab.c: tp3.y
-	yacc -d -v tp3.y
+y.tab.c: prog.y
+	yacc -d -v prog.y
 
 clean:
-	rm lex.yy.c y.tab.* tp3
+	rm lex.yy.c y.tab.* prog y.output

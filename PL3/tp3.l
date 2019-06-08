@@ -54,7 +54,7 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 \#.*									{
 											printf("Comment: %s\n",yytext);
 										}
-{word}+\ (.)+						{
+[^ ]+\ (.)+						{
 											//printf("YYtext: %s\n",yytext);
 											char* res = until_space(yytext);
 											if (g_tree_lookup(languages,res)) {
@@ -79,11 +79,10 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 											}
 											*/
 										}	
-{word}+									{
-											printf("Termo: %s\n",yytext);
-										}																			
-
-\n[\n]+ 								{printf("New Concept\n");}
+\n\n									{
+											printf("New Concept\n");
+											return Concept_End;
+										}
 .|\n 									{;}
 
 %%

@@ -24,6 +24,8 @@ INV : ID {printf("INV: %s\n",$1);}
 
 CONCEPTS : ID {printf("CONCEPTS: %s\n",$1);}
 
+LANGUAGES : 
+
 	/*
 	LANGUAGES : TRANS_LANGS BASELANG INVERSE
 
@@ -41,7 +43,12 @@ CONCEPTS : ID {printf("CONCEPTS: %s\n",$1);}
 			 | Concept CONCEPTS		{concs++;}
 			 ;
 
-	Concept : BASE_TERM
+	Concept : BASE_TERM EXPRESSIONS
+
+	EXPRESSIONS : 
+				| Expression EXPRESSIONS
+
+	Expression : 
 
 	BASE_TERM : {printf("base_term:%s\n",$0);}
 		  ;
