@@ -29,7 +29,7 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 
 (%languages)								{
 												printf("Trans\n");
-												//return TRANS;
+												return TRANS;
 											}
 
 (%baselang)									{
@@ -39,7 +39,7 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 
 (%inv)										{
 												printf("Inverse\n");
-												//return INV;
+												return INV;
 											}
 
 [^ |\n]+									{	
