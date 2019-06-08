@@ -2,9 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
+#include "lex.yy.c"
+
 int yylex();
 int concs = 0;
-void yyerror(char *s); 
+void yyerror(char* s){
+	printf("Erro sintático %s\n",s);
+}
 %}
 %union {char* string;}
 %token Prog
@@ -25,7 +29,7 @@ Lang : BaseLang
 	 | Inverse
 	 ;
 
-BaseLang : BASE {printf("BASE\n");}
+BaseLang : BASE words {printf("BASE\n");}
 		 ;
 
 TransLang : TRANS words
@@ -93,8 +97,7 @@ words : WORD {printf("WORD: %s\n",$1);}
 	*/
 %%
 
-#include "lex.yy.c"
-
-	void yyerror(char* s){
-	printf("Erro sintático %s\n",s);
+int main(){
+	yyparse();
+	return(0);
 }

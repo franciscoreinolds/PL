@@ -23,7 +23,8 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 %%
 
 (PROGRAMA)									{
-												//return Prog;
+												printf("Program\n");
+												return Prog;
 											}
 
 (%languages)								{
@@ -32,8 +33,8 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 											}
 
 (%baselang)									{
-												printf("Base\n");
-												//return BASE;
+												//printf("Base\n");
+												return BASE;
 											}	
 
 (%inv)										{
@@ -42,77 +43,38 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 											}
 
 [^ |\n]+									{	
-												printf("Word: %s\n",yytext);
+												//printf("Word: %s\n",yytext);
 												yylval.string = strdup(yytext);
 												return WORD;
 											}
 
-.|\n 										{printf("APANHA ALGO: %s \n",yytext);}
-	
-	/*
-	(' ')[^ ]							
-
-	(%language).*							{	
-												printf("Language: %s\n",yytext);
-												char* aux = strtok(yytext," ");
-												aux = strtok(NULL," ");
-												while(aux){
-													printf("aux: %s\n",aux);
-													g_tree_insert(languages,strdup(aux),strdup(aux));
-													aux = strtok(NULL," ");
-												}
-												return translangs;
+.|\n 										{
+												//printf("Oh hi mark\n");
 											}
-	(%baselang).*							{
-												printf("BaseLang: %s\n",yytext);
-												char* aux = strtok(yytext," ");
-												aux = strtok(NULL," ");
-												printf("aux: %s\n",aux);
-												baselang = strdup(aux);
-												return baselangs;
-											}
-	(%inv).*								{
-												printf("Inverse: %s\n",yytext);
-												char* aux = strtok(yytext," ");
-												aux = strtok(NULL," ");
-												char* inv1 = strdup(aux);
-												printf("aux: %s\n",aux);
-												aux = strtok(NULL," ");
-												printf("aux: %s\n",aux);
-												char* inv2 = strdup(aux);
-												g_hash_table_insert(inverses,inv1,inv2);
-												g_hash_table_insert(inverses,inv2,inv1);
-												return inv;
-											}
-	\#.*									{
-												printf("Comment: %s\n",yytext);
-											}
-																				
-	.|\n 									{;}
-	*/
 %%
-
-int printEntry(char* key, char* value) {
-  printf("key: %s\tvalue: %s\n", key, value);
-  return 0;
-}
-
-int main(){ 
-	languages =  g_tree_new((GCompareFunc)strcmp);
-	inverses = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
-	yylex();
-	g_tree_foreach(languages, (GTraverseFunc) printEntry, NULL);
-	if (g_tree_lookup(languages,"EN")) printf("Found EN\n");
-	g_tree_destroy(languages);
-
-	GHashTableIter iter;
-	gpointer key1;
-	gpointer value1;
-	g_hash_table_iter_init (&iter, inverses);
-	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
-		gchar* key = (gchar*) key1;
-		gchar* value = (gchar*) value1;
-		printf("Pair: %s <> %s \n",key,value);
+	/*
+	int printEntry(char* key, char* value) {
+	  printf("key: %s\tvalue: %s\n", key, value);
+	  return 0;
 	}
-  return 0;
-}
+
+	int main(){ 
+		languages =  g_tree_new((GCompareFunc)strcmp);
+		inverses = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
+		yylex();
+		g_tree_foreach(languages, (GTraverseFunc) printEntry, NULL);
+		if (g_tree_lookup(languages,"EN")) printf("Found EN\n");
+		g_tree_destroy(languages);
+
+		GHashTableIter iter;
+		gpointer key1;
+		gpointer value1;
+		g_hash_table_iter_init (&iter, inverses);
+		while (g_hash_table_iter_next (&iter, &key1, &value1)) {
+			gchar* key = (gchar*) key1;
+			gchar* value = (gchar*) value1;
+			printf("Pair: %s <> %s \n",key,value);
+		}
+	  return 0;
+	}
+	*/
