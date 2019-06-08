@@ -31,6 +31,8 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 												g_tree_insert(languages,strdup(aux),strdup(aux));
 												aux = strtok(NULL," ");
 											}
+											yylval.gtree = languages;
+											return TRANS;
 										}
 (%baselang).*							{
 											printf("BaseLang: %s\n",yytext);
@@ -38,18 +40,22 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 											aux = strtok(NULL," ");
 											printf("aux: %s\n",aux);
 											baselang = strdup(aux);
+											yylval.string = strdup(aux);
+											return BASE;
 										}
 (%inv).*								{
-											printf("Inverse: %s\n",yytext);
 											char* aux = strtok(yytext," ");
 											aux = strtok(NULL," ");
-											char* inv1 = strdup(aux);
-											printf("aux: %s\n",aux);
+											struct info estrutura;
+											estrutura.rel1 = strdup(aux);
+											printf("Rel1: %s\n",aux);
 											aux = strtok(NULL," ");
-											printf("aux: %s\n",aux);
-											char* inv2 = strdup(aux);
-											g_hash_table_insert(inverses,inv1,inv2);
-											g_hash_table_insert(inverses,inv2,inv1);
+											printf("Rel2: %s\n",aux);
+											estrutura.rel2 = strdup(aux);
+											yylval.info = estrutura;
+											g_hash_table_insert(inverses,strdup(estrutura->rel1),strdup(estrutura->rel2);
+											g_hash_table_insert(inverses,strdup(estrutura->rel2),strdup(estrutura->rel1);
+											return INV;
 										}
 \#.*									{
 											printf("Comment: %s\n",yytext);

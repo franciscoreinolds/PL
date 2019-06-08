@@ -1,103 +1,145 @@
 %{
 #include <stdio.h>
+#include <gmodule.h>
 #include <stdlib.h>
 #include <glib.h>
 #include "lex.yy.c"
+#include "info.h"
 
 int yylex();
 int concs = 0;
+int placeholder_size = 0;
+
+char* baselang;
+
+
+GTree* languages;
+GHashTable* relations_table;
+GHashTable* translations;
+GArray* placeholder;
+GString *s;
+
+void print_relation(struct relation *toP){
+	printf("PRINT_RELATION Term: %s\tElement_Amount: %d Size: %d\n",toP->term,toP->element_amount,toP->collection->len);
+	int it = 0;
+	while (it < toP->collection->len){
+		GString* pls = g_ptr_array_index((toP->collection),it);
+		printf("GArray[%d]: %s\n",it++,pls->str);
+	}
+}
+
+int prettyEntry(char* key, char* value) {
+  printf("PRETTYkey: %s\tvalue: %s\n", key, value);
+  return 0;
+}
+
 void yyerror(char* s){
 	printf("Erro sintático %s\n",s);
 }
 %}
-%union {char* string;}
-%token Prog
+%union 	{
+			char* string;
+			GTree* tree;
+			GHashTable* map;
+			struct info* ptr;
+			struct relation* rel;
+		}
 %token <string> WORD
-%token BASE
-%token INV
-%token TRANS
+%token <string> BASE
+%token <ptr> INV 
+%token <ptr> TRANSLATION
+%token <rel> RELATION
+%token <tree> TRANS
+%type <string> base
+%token START_CONCEPT
 %%
 
-Program : Prog Languages
-
-Languages : Languages Lang {printf("Languages Lang\n");}
-		  | Lang {printf("Lang\n");}
-		  ;
-
-Lang : BaseLang
-	 | TransLang
-	 | Inverse
-	 ;
-
-BaseLang : BASE words {printf("BASE\n");}
-		 ;
-
-TransLang : TRANS words
-		  ;
-
-Inverse : INV words
+Program : trans base inverses Concepts
 		;
 
-words : WORD {printf("WORD: %s\n",$1);}
-	  | words WORD {printf("words WORD: %s\n",$2);}
-	  ;
+trans 	:	TRANS 	{
+						languages = $1;
+						g_tree_foreach(languages, (GTraverseFunc) prettyEntry, NULL);
+					}		
+		;
 
-	/*
-	Program : LANGUAGES
+base 	:	BASE 	{
+						baselang = $1;
+						printf("Base: %s\n",baselang);
+					}
+		;
 
-	LANGUAGES : Language
-			  | LANGUAGES Language
-			  ;
-
-	Language : TRANS_LANGS 
-			 | BASE_LANG 
-			 | INVERSES
-			 ;
-
-	langs : lang
-	      | lang langs
-	      ;
-
-	TRANS_LANGS : translangs langs
-				;
-
-	BASE_LANG : baselangs lang
-			  ;
-
-	INVERSES : inv langs
-			 ;
-
-	TRANS_LANGS : {printf("trans_lang:%s\n",$0);}
-				| {printf("trans_langss:%s\n",$0);}
-				;
-
-	BASELANG : {printf("base_lang:%s\n",$0);}
-			 ;
-
-	INVERSE : {printf("inv1,inv2:%s\n",$0);}
+inverses 	: 	inverse
+			|	inverses inverse
 			;
 
-	CONCEPTS : Concept 				{concs++;}
-			 | Concept CONCEPTS		{concs++;}
-			 ;
+inverse 	:	INV 	{	
+							struct info* estrutura;
+							estrutura = $1;
+							printf("Info.rel1: %s\n", estrutura->rel1);
+							g_hash_table_insert(relations_table,strdup(estrutura->rel1),strdup(estrutura->rel2));
+							g_hash_table_insert(relations_table,strdup(estrutura->rel2),strdup(estrutura->rel1));				
+						}
+			;		
 
-	Concept : BASE_TERM EXPRESSIONS Concept_End
+Concepts 	:	Concept
+			|	Concepts 	Concept
 			;
 
-	EXPRESSIONS :
-				| Expression EXPRESSIONS
+Concept 	:	START_CONCEPT	Base_Term	Translations 	Relations 	{
+
+																		}
+			;
+
+
+Base_Term 	:	WORD 	{
+							printf("Hi: %s\n",$1);
+						}
+			;
+
+Translations	:	Translation
+				|	Translations	Translation
 				;
 
-	Expression : INV words
-			   | LANG words
-			   ;
+Translation	:	TRANSLATION	{
+								struct info* toInsert;
+								toInsert = $1;
+								g_hash_table_insert(translations,toInsert->rel1,toInsert->rel2);
+							}
+			;
 
-	BASE_TERM : {printf("base_term:%s\n",$0);}
-		  	  ;
-	*/
+Relations 	:	Relation
+			|	Relations 	Relation
+			;
+
+Relation 	:	RELATION 	{
+								struct relation* toPrint;
+								toPrint = $1;
+								int it = 0;
+								while (it < toPrint->collection->len){
+									GString* pls = g_ptr_array_index((toPrint->collection),it);
+									printf("GArray[%d]: %s\n",it++,pls->str);
+								}
+							}
+			;
+
 %%
 
 int main(){
+	languages =  g_tree_new((GCompareFunc)strcmp);
+	relations_table = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
+	translations = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
+	placeholder = g_array_new(FALSE, FALSE, sizeof(GString *));
 	yyparse();
+	g_tree_destroy(languages);
+	GHashTableIter iter;
+	gpointer key1;
+	gpointer value1;
+	g_hash_table_iter_init (&iter, translations);
+	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
+		gchar* key = (gchar*) key1;
+		gchar* value = (gchar*) value1;
+		printf("Translations: %s <> %s \n",key,value);
+	}
 	return(0);
 }
