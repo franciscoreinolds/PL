@@ -43,7 +43,7 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 								char* aux = strtok(yytext," ");
 								aux = strtok(NULL," ");
 								while(aux){
-									printf("Language: %s\n",aux);
+									//printf("Language: %s\n",aux);
 									g_tree_insert(languages,strdup(aux),strdup(aux));
 									aux = strtok(NULL," ");
 								}
@@ -65,14 +65,14 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 								estrutura.rel1 = strdup(aux);
 								aux = strtok(NULL," ");
 								estrutura.rel2 = strdup(aux);
-								printf("Estrutura rel1: %s rel2 %s\n",estrutura.rel1,estrutura.rel2);
+								//printf("Estrutura rel1: %s rel2 %s\n",estrutura.rel1,estrutura.rel2);
 								yylval.ptr = &estrutura;
 								g_hash_table_insert(inverses,strdup(estrutura.rel1),strdup(estrutura.rel2));
 								g_hash_table_insert(inverses,strdup(estrutura.rel2),strdup(estrutura.rel1));
 								return INV;
 							}
 [^ \n]+						{
-								printf("Termo: %s\n",yytext);
+								//printf("Termo: %s\n",yytext);
 								yylval.string = strdup(yytext); 
 								return WORD;
 							}												
@@ -87,9 +87,9 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 									return TRANSLATION;
 								}
 								else if (g_hash_table_lookup(inverses,res)){
-									printf("Found relation:%s\n",yytext);
+									//printf("Found relation:%s\n",yytext);
 									char* after = after_space(yytext);
-									printf("After: %s\n",after);
+									//printf("After: %s\n",after);
 									GList*	aux = NULL;
 									int comma = has_comma(after);
 									if (comma) {
@@ -102,7 +102,7 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 										}
 									}									
 									else {
-										printf("The text: %s does not have commas!\n",after);
+										//printf("The text: %s does not have commas!\n",after);
 										aux = g_list_append(aux,strdup(after));
 									}
 									struct relation* estrutura = malloc(sizeof(struct relation));
@@ -111,24 +111,24 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 									yylval.rel = estrutura;
 									return RELATION;
 								}
-								else {
-									printf("Found term: %s\n",yytext);
+								else if (!strncmp(res,"SN",2)) { // Scope_Note
+									//printf("FOUND Scope_Note: %s\n",yytext);
+									yylval.string = strdup(yytext);
+									return SCOPE;
 								}
-								/*
-								printf("res: %s\n",res);
-								char* aux = strtok(yytext," ");
-								printf("aux: %s\n",aux);
-								aux = strtok(NULL," ");
-								printf("aux: %s\n",aux);
-								aux = strtok(aux,", ");
-								while (aux){
-									printf("aux comma: %s\n",aux);
-									aux = strtok(NULL,", ");
+								else if (res[0] == '#') { // Comment
+									//printf("Found Comment: %s\n",yytext);
+									yylval.string = strdup(yytext);
+									return COMMENT;
 								}
-								*/
+								else { // Term
+									//printf("Found term: %s\n",yytext);
+									yylval.string = strdup(yytext); 
+									return WORD;
+								}
 							}	
 \n[\n]+						{
-								printf("New Concept\n");
+								//printf("New Concept\n");
 								return START_CONCEPT;
 							}
 .|\n 						{;}
@@ -137,9 +137,8 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 int yywrap(){
 	/*
 		g_tree_foreach(languages, (GTraverseFunc) printEntry, NULL);
-		if (g_tree_lookup(languages,"EN")) printf("Found EN\n");
+		//if (g_tree_lookup(languages,"EN")) printf("Found EN\n");
 		g_tree_destroy(languages);
-
 		GHashTableIter iter;
 		gpointer key1;
 		gpointer value1;

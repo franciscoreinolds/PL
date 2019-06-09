@@ -1,0 +1,20 @@
+Erro sintático syntax error
+------------------
+Size: 1
+------------------
+
+Concept
+Term -> Abandono de estudos
+
+Relations and Terms
+
+Available Translations
+Translations: IT <> abbandono degli studi 
+Translations: EN <> dropout 
+Translations: DA <> dropout 
+Translations: ES <> abandono de estudios 
+Translations: FR <> abandon d'études 
+Translations: DE <> Dropout 
+Translations: NL <> voortijdig schoolverlaten 
+Translations: FI <> keskeyttäminen 
+ 

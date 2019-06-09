@@ -15,6 +15,8 @@ typedef struct concept	{
 	char* term;
 	GHashTable* translations;
 	GHashTable* relations;
+	GList* scope;
+	GList* comments;
 }concept;
 
 #endif

@@ -1,0 +1,256 @@
+%baselang PT
+%languages  DA DE EN ES FI FR IT NL SV	
+%inv BT NT
+%inv NT2 BT2
+
+Abandono de estudos
+DA dropout
+DE Dropout
+EN dropout
+ES abandono de estudios
+FI keskeyttäminen
+FR abandon d'études
+IT abbandono degli studi
+NL voortijdig schoolverlaten
+SV avbruten skolgång
+SN	Refere-se aos educandos que, por incapacidade, falta de meios económicos, etc., não chegam a terminar os seus estudos
+BT Interrupção de estudos
+BT2 Escolaridade
+
+Abertura pessoal
+DA selvafsløring
+DE Selbstöffnung
+EN self-disclosure
+ES apertura personal
+FI sosiaalinen avoimuus
+FR ouverture personnelle
+IT apertura personale
+NL sociale openheid
+SV självutlämnande
+BT Extroversão
+BT2 Sociabilidade
+
+Aborrecimento
+DA kedsomhed
+DE Langeweile
+EN boredom
+ES fastidio
+FI ikävystyminen
+FR ennui
+IT noia
+NL verveling
+SV långtråkighet
+BT Insatisfação
+BT2 Sentimento
+
+Aborto
+DA abort
+DE Abtreibung
+EN abortion
+ES aborto
+FI abortti
+FR avortement
+IT aborto
+NL abortus
+SV abort
+BT Controlo da natalidade
+BT2 Planeamento familiar
+
+Baden-Wurttemberg
+DA Baden-Württemberg
+DE Baden-Württemberg
+EN Baden-Wurtemberg
+ES Baden-Württemberg
+FI Baden-Württemberg
+FR Bade-Wurtemberg
+IT Baden-Württemberg
+NL Baden-Würtemberg
+SV Baden-Württemberg
+BT Alemanha - República Federal
+BT2 Europa Ocidental
+
+Biblioteca infanto-juvenil
+DA børnebibliotek
+DE Kinderbibliothek
+EN children's library
+ES biblioteca infantil y juvenil
+FI lastenkirjastot
+FR bibliothèque pour la jeunesse
+IT biblioteca per ragazzi
+NL jeugdbibliotheek
+SV barnbibliotek
+BT Biblioteca
+BT2 Mediateca
+
+Bielorússia. RSS
+DA Hviderusland
+DE Weißrußland
+EN Belarus
+ES Bielorrusia RSS
+FI Valko-Venäjä
+FR Bélarus
+IT Bielorussia (rss)
+NL Wit-Rusland
+SV Vitryssland
+BT Europa Oriental
+
+Ciências sociais
+DA samfundsvidenskaber
+DE Sozialwissenschaften
+EN social sciences
+ES ciencias sociales
+FI yhteiskuntatieteet
+FR sciences sociales
+IT scienze sociali
+NL sociale wetenschappen
+SV samhällsvetenskaper
+NT Ciências administrativas
+NT2 Burocracia
+NT Ciências económicas
+NT2 Marketing
+NT Ciências jurídicas
+NT2 Direito
+NT Ciências políticas
+NT2 Estudos sobre a paz
+NT Demografia
+NT Docimologia
+NT Etnologia
+NT Futurologia
+NT Geografia social
+NT Grafologia
+NT História
+NT2 Arqueologia
+NT2 Estudos internacionais
+NT2 Estudos locais
+NT2 História antiga
+NT2 História contemporânea
+NT2 História da arte
+NT2 História da educação
+NT2 História da filosofia
+NT2 História da literatura
+NT2 História das ciências
+NT2 História medieval
+NT2 História moderna
+NT2 História social
+NT2 Perspectiva histórica
+NT Musicologia
+NT Sociologia
+NT2 Criminologia
+NT2 Sociologia da educação
+NT2 Sociologia da família
+NT2 Sociologia do estudante
+NT2 Sociologia industrial
+NT2 Sociometria
+
+Comité Económico e Social CE
+DA EF's økonomiske og sociale komité
+DE Wirtschafts- und Sozialausschuß EG
+EN EC Economic and Social Committee
+ES Comité Económico y Social CE
+FI EU:n talous- ja sosiaalikomitea
+FR Comité économique et social CE
+IT Comitato Economico e Sociale CE
+NL Eonomisch en Sociaal Comité EG
+SV EG:s ekonomiska och sociala kommitté
+BT Comunidades Europeias (instituições)
+
+Comportamento
+DA adfærd
+DE Verhalten
+EN behaviour
+ES conducta
+FI käyttäytyminen
+FR comportement
+IT comportamento
+NL gedrag
+SV beteende
+NT Comportamento afectivo
+NT Comportamento antiautoritário
+NT Comportamento autoritário
+NT Comportamento do aluno
+NT Comportamento do professor
+NT Comportamento materno
+NT Comportamento paterno
+NT Comportamento sexual
+NT2 Erotismo
+NT2 Homossexualidade
+NT2 Pudor
+NT Comportamento social
+NT2 Comportamento cultural
+NT2 Comportamento de grupo
+NT2 Comportamento do estudante
+NT2 Comportamento político
+NT2 Comportamento religioso
+NT2 Mal-estar da juventude
+NT2 Participação
+NT Comportamento verbal
+NT Disciplina
+
+Comunidades Europeias (instituições)
+DA Europæiske Fællesskaber(inst.)
+DE Europäische Gemeinschaften (Inst)
+EN European Communities (institutions)
+ES Comunidades Europeas (instituciones)
+FI EU-instituutiot
+FR Communautés européennes (institutions)
+IT Comunità Europee (istituzioni)
+NL Europese Gemeenschappen (inst.)
+SV Europeiska gemenskaperna (institutioner)
+NT Comissão CE
+NT Comité das Regiões CE
+NT Comité Económico e Social CE
+NT Conselho CE
+NT Parlamento Europeu
+NT Tribunal de Contas CE
+NT Tribunal de Justiça CE
+
+Discalculia
+DA dyskalkuli
+DE Rechenschwäche
+EN acalculia
+ES discalculia
+FI laskuvaikeudet
+FR dyscalculie
+IT acalculia
+NL dyscalculie
+SV akalkyli
+BT Dificuldade de aprendizagem
+
+Educação pré-escolar
+DA førskoleopdragelse
+DE Vorschulerziehung
+EN pre-school education
+ES educación preescolar
+FI esikoulukasvatus
+FR éducation préscolaire
+IT istruzione prescolare
+NL voorschools onderwijs
+SV förskoleundervisning
+BT Nível de ensino
+
+
+Escala de atitude
+DA holdningsskala
+DE Einstellungsskala
+EN attitude scale
+ES escala de actitud
+FI asenneasteikko
+FR échelle d'attitude
+IT scala di atteggiamento
+NL attitudeschaal
+SV attitydskala
+BT Medida
+BT2 Técnica de investigação
+
+Transição ensino básico-secundário primeiro ciclo
+DA overgang fra 6. til 7. klasse
+DE Übergang Primarbildung-Sekundarbildung
+EN transition from primary to lower secondary school
+ES transición educación primaria-secundaria primer ciclo
+FI siirtyminen ala-asteelta yläasteelle
+FR transition école primaire-secondaire premier cycle
+IT transizione scuola primaria-secondaria inferiore
+NL overgang primair onderwijs-secundair onderwijs
+SV övergång från grundskolans sex första år till de tre sista åren
+BT Sistema escolar
+BT2 Nível de ensino

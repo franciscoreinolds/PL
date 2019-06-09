@@ -1,10 +1,6 @@
-#Thesaurus Europeu da Educação	Acesso à educação  -  7
-# ...
-
 %baselang PT
-%lang  DA DE EN	ES FI FR IT NL SV	
-
-
+%languages  DA DE EN ES FI FR IT NL SV	
+%inv BT NT
 
 Abandono de estudos
 MT	(05) Administração da educação
