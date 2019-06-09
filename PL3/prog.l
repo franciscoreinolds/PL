@@ -20,7 +20,14 @@ char* after_space (char* text) {
 	strncpy(res,text+i+1,strlen(text));
 	return res;
 }
-			
+	
+int has_comma (char* text){
+	int i = 0;
+	while (text[i]!=',' && text[i]!='\0') i++;
+	if (text[i]=='\0') return 0;
+	else return i;
+}
+
 char* baselang;
 GTree* languages;
 GHashTable* inverses;
@@ -33,11 +40,10 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 %%
 
 (%language).*				{	
-								printf("Language: %s\n",yytext);
 								char* aux = strtok(yytext," ");
 								aux = strtok(NULL," ");
 								while(aux){
-									printf("aux: %s\n",aux);
+									printf("Language: %s\n",aux);
 									g_tree_insert(languages,strdup(aux),strdup(aux));
 									aux = strtok(NULL," ");
 								}
@@ -45,8 +51,7 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 								return TRANS;
 							}
 (%baselang).*				{
-								printf("Baseeeeeeee\n");
-								yylval.string = strdup(yytext);
+								yylval.string = strdup(yytext+10);
 								return BASE;
 							}	
 (%inv).*					{
@@ -54,14 +59,11 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 									inverses = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
 									inverses_init = 1;
 								}
-								printf("Inverse\n");
 								char* aux = strtok(yytext," ");
 								aux = strtok(NULL," ");
 								struct info estrutura;
 								estrutura.rel1 = strdup(aux);
-								printf("aux: %s\n",aux);
 								aux = strtok(NULL," ");
-								printf("aux: %s\n",aux);
 								estrutura.rel2 = strdup(aux);
 								printf("Estrutura rel1: %s rel2 %s\n",estrutura.rel1,estrutura.rel2);
 								yylval.ptr = &estrutura;
@@ -75,40 +77,44 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 								return WORD;
 							}												
 [^ %\n]+\ (.)+				{
-								printf("YYtext: %s\n",yytext);
 								char* res = until_space(yytext);
 								if (g_tree_lookup(languages,res)) {
 									char* after = after_space(yytext);
-									struct info estrutura;
-									estrutura.rel1 = strdup(res);
-									estrutura.rel2 = strdup(after);
-									printf("res: %s after: %s\n",estrutura.rel1,estrutura.rel2);									
-									yylval.ptr = &estrutura;
+									struct info *estrutura = malloc(sizeof(struct info));
+									estrutura->rel1 = strdup(res);
+									estrutura->rel2 = strdup(after);
+									yylval.ptr = estrutura;
 									return TRANSLATION;
 								}
 								else if (g_hash_table_lookup(inverses,res)){
-									printf("Found relation: %s\n",res);
+									printf("Found relation:%s\n",yytext);
 									char* after = after_space(yytext);
-									GPtrArray*	aux;
-									aux = g_ptr_array_new();
-									char* toTok = strtok(after,", ");
-									int it = 0;
-									while (toTok){
-										g_ptr_array_add(aux,g_string_new(toTok));
-										GString* toP = g_ptr_array_index(aux,aux->len-1);
-										printf("string: %s\n",toP->str);
-										toTok = strtok(NULL,", ");
-										it++;
+									printf("After: %s\n",after);
+									GList*	aux = NULL;
+									int comma = has_comma(after);
+									if (comma) {
+										char* toTok = strtok(after,", ");
+										int it = 0;
+										while (toTok){
+											aux = g_list_append(aux,strdup(toTok));
+											toTok = strtok(NULL,", ");
+											it++;
+										}
+									}									
+									else {
+										printf("The text: %s does not have commas!\n",after);
+										aux = g_list_append(aux,strdup(after));
 									}
-									struct relation estrutura;
-									estrutura.term = strdup(res);
-									estrutura.collection = aux;
-									estrutura.element_amount = it;
+									struct relation* estrutura = malloc(sizeof(struct relation));
+									estrutura->term = strdup(res);
+									estrutura->collection = g_list_copy_deep(aux,(GCopyFunc) strdup,NULL);
+									yylval.rel = estrutura;
 									return RELATION;
 								}
 								else {
 									printf("Found term: %s\n",yytext);
 								}
+								/*
 								printf("res: %s\n",res);
 								char* aux = strtok(yytext," ");
 								printf("aux: %s\n",aux);
@@ -119,6 +125,7 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 									printf("aux comma: %s\n",aux);
 									aux = strtok(NULL,", ");
 								}
+								*/
 							}	
 \n[\n]+						{
 								printf("New Concept\n");

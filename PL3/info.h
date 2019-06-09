@@ -8,8 +8,13 @@ typedef struct info {
 
 typedef struct relation {
 	char* term;
-	GPtrArray* collection;
-	int element_amount;
+	GList* collection;
 }relation;
+
+typedef struct concept	{
+	char* term;
+	GHashTable* translations;
+	GHashTable* relations;
+}concept;
 
 #endif
