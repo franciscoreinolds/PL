@@ -72,10 +72,11 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 							}
 [^ \n]+						{
 								//printf("Termo: %s\n",yytext);
-								yylval.string = strdup(yytext); 
+								yylval.string = yytext; 
 								return WORD;
 							}												
 [^ %\n]+\ (.)+				{
+								printf("Spacey stuff: %s\n",yytext);
 								char* res = until_space(yytext);
 								if (g_tree_lookup(languages,res)) {
 									char* after = NULL;
@@ -98,9 +99,9 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 									char* after = NULL;
 									int spot;
 									if (spot = after_space(yytext)) {
+										printf("strlen yytext: %d spot %d\n",(int) strlen(yytext),spot);
 										after = malloc(sizeof(char)*(strlen(yytext)-spot+1));
-										after[0] = '\0';
-										strncpy(after,yytext+spot+1,strlen(yytext)-1);
+										after = strndup(yytext+spot+1,strlen(yytext)-1);
 									}									//printf("After: %s\n",after);
 									GList*	aux = NULL;
 									int comma = has_comma(after);
@@ -140,7 +141,7 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 								}
 								else { // Term
 									//printf("Found term: %s\n",yytext);
-									yylval.string = strdup(yytext); 
+									yylval.string = yytext; 
 									free(res);
 									return WORD;
 								}

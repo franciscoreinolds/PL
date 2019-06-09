@@ -1,5 +1,5 @@
 %baselang PT
-%languages  DA DE EN ES FI FR IT NL SV	
+%languages  DA DE EN ES FI FR IT NL SV 
 %inv BT NT
 %inv NT2 BT2
 
@@ -13,7 +13,7 @@ FR abandon d'études
 IT abbandono degli studi
 NL voortijdig schoolverlaten
 SV avbruten skolgång
-SN	Refere-se aos educandos que, por incapacidade, falta de meios económicos, etc., não chegam a terminar os seus estudos
+SN Refere-se aos educandos que, por incapacidade, falta de meios económicos, etc., não chegam a terminar os seus estudos
 BT Interrupção de estudos
 BT2 Escolaridade
 

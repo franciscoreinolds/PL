@@ -74,12 +74,6 @@ void prints_translations(GHashTable* toPrint){
 }
 
 void concept_destroyer (gpointer data) {
-	/*
-	struct concept* estrutura = *(concept**) data;
-	char* aux = (char*) (data->term);
-	char* aux = (char*) estrutura->term;
-	printf("Term: %s\n", aux);
-	*/
 	struct concept* estrutura = data;
 	g_list_free_full(estrutura->scope,free);
 	g_list_free_full(estrutura->comments,free);
@@ -122,8 +116,7 @@ GHashTable* copy_relations (GHashTable* hash){
 		gchar* key = (gchar*) key1;
 		GList* value = (GList*) value1;
 		//printf("Relations: %s <> %d \n",key,g_list_length(value));
-		GList* copy = g_list_copy_deep(value,(GCopyFunc) strdup,NULL);
-		g_hash_table_insert(res,strdup(key),copy);
+		g_hash_table_insert(res,strdup(key),g_list_copy_deep(value,(GCopyFunc) strdup,NULL));
 	}
 
 	return res;
@@ -289,13 +282,14 @@ Relation 	:	RELATION 	{
 								int length = g_list_length(rel->collection);
 								if (lista = g_hash_table_lookup(relations_terms,rel->term)) {
 									i = 0;
-									while (i < length) lista = g_list_append(lista,g_list_nth_data(rel->collection,i++));
-									g_hash_table_insert(relations_terms,rel->term,lista);
+									GList* toInsert = g_list_copy_deep(lista,(GCopyFunc)strdup,NULL);
+									while (i < length) toInsert = g_list_append(toInsert,strdup(g_list_nth_data(rel->collection,i++)));
+									g_hash_table_insert(relations_terms,rel->term,g_list_copy_deep(toInsert,(GCopyFunc)strdup,NULL));
+									g_list_free_full(toInsert,free);
 								}
-								else {
-									g_hash_table_insert(relations_terms,rel->term,g_list_copy_deep(rel->collection,(GCopyFunc)strdup,NULL));
-									g_list_free_full(rel->collection,free);
-								}
+								else g_hash_table_insert(relations_terms,rel->term,g_list_copy_deep(rel->collection,(GCopyFunc)strdup,NULL));
+								
+								g_list_free_full(rel->collection,free);
 								
 							}
 			;
