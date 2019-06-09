@@ -197,6 +197,7 @@ inverses 	: 	inverse
 			;
 
 inverse 	:	INV 	{	
+							struct info* estrutura = $1;	
 							g_hash_table_insert(relations_table,strdup($1->rel1),strdup($1->rel2));
 							g_hash_table_insert(relations_table,strdup($1->rel2),strdup($1->rel1));
 						}

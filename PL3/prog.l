@@ -71,12 +71,10 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 								return INV;
 							}
 [^ \n]+						{
-								//printf("Termo: %s\n",yytext);
 								yylval.string = yytext; 
 								return WORD;
 							}												
 [^ %\n]+\ (.)+				{
-								printf("Spacey stuff: %s\n",yytext);
 								char* res = until_space(yytext);
 								if (g_tree_lookup(languages,res)) {
 									char* after = NULL;
@@ -95,14 +93,12 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 									return TRANSLATION;
 								}
 								else if (g_hash_table_lookup(inverses,res)){
-									//printf("Found relation:%s\n",yytext);
 									char* after = NULL;
 									int spot;
 									if (spot = after_space(yytext)) {
-										printf("strlen yytext: %d spot %d\n",(int) strlen(yytext),spot);
 										after = malloc(sizeof(char)*(strlen(yytext)-spot+1));
 										after = strndup(yytext+spot+1,strlen(yytext)-1);
-									}									//printf("After: %s\n",after);
+									}
 									GList*	aux = NULL;
 									int comma = has_comma(after);
 									if (comma) {
@@ -114,10 +110,8 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 											it++;
 										}
 									}									
-									else {
-										//printf("The text: %s does not have commas!\n",after);
-										aux = g_list_append(aux,strdup(after));
-									}
+									else aux = g_list_append(aux,strdup(after));
+									
 									struct relation* estrutura = malloc(sizeof(struct relation));
 									estrutura->term = strdup(res);
 									estrutura->collection = g_list_copy_deep(aux,(GCopyFunc) strdup,NULL);

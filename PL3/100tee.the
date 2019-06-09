@@ -242,6 +242,172 @@ SV attitydskala
 BT Medida
 BT2 Técnica de investigação
 
+
+Formação em alternância
+DA sandwich-kursus
+DE Duale Ausbildung
+EN alternating training
+ES formación alternada
+FI jaksottaiskoulutus
+FR formation alternée
+IT alternanza scuola lavoro
+NL alternerend onderwijs
+SV varvad utbildning
+SN	Tipo de formação com períodos alternados de formação na escola e na empresa
+BT Aprendizagem profissional
+BT2 Tipo de formação
+
+Grupo marginal
+DA marginalgruppe
+DE Randgruppe
+EN marginal group
+ES cuarto mundo
+FI marginaaliryhmät
+FR quart-monde
+IT quarto mondo
+NL randgroep
+SV marginalgrupp
+SN	Num país, grupos sociais de rendimentos baixos, irregulares e incertos, acumulando deficiências ligadas ao meio familiar, à saúde, a uma exclusão relativamente à cultura dominante
+BT Classe social
+BT2 Estrutura social
+
+Percepção de papéis
+DA rolleopfattelse
+DE Rollenwahrnehmung
+EN role perception
+ES percepción del rol
+FI roolien havaitseminen
+FR perception de rôle
+IT percezione di ruolo
+NL waarneming van rolgedrag
+SV rolluppfattning
+BT Percepção social
+BT2 Percepção
+
+Percepção de si
+DA selvopfattelse
+DE Selbstwahrnehmung
+EN self-perception
+ES percepción de sí mismo
+FI itsehavainto
+FR perception de soi
+IT percezione di sé
+NL zelfwaarneming
+SV jaguppfattning
+BT Percepção
+
+Percepção do espaço
+DA rumopfattelse
+DE Räumliche Wahrnehmung
+EN space perception
+ES percepción del espacio
+FI spatiaalinen havaitseminen
+FR perception de l'espace
+IT percezione dello spazio
+NL ruimtelijke waarneming
+SV rumsuppfattning
+BT Percepção
+
+Percepção do outro
+DA opfattelse af andre
+DE Fremdwahrnehmung
+EN perception of others
+ES percepción del otro
+FI toisten huomioiminen
+FR perception d'autrui
+IT percezione dell'altro
+NL waarneming van de ander
+SV uppfattning av andra
+BT Percepção
+
+Percepção do tempo
+DA tidsoplevelse
+DE Zeitempfinden
+EN time perception
+ES percepción del tiempo
+FI ajan havaitseminen
+FR perception du temps
+IT percezione del tempo
+NL tijdwaarneming
+SV tidsuppfattning
+BT Percepção
+
+Percepção global
+DA holistisk perception
+DE Ganzheitliche Wahrnehmung
+EN holistic perception
+ES percepción global
+FI holistinen havaitseminen
+FR perception globale
+IT percezione olistica
+NL globaalwaarneming
+SV holistisk perception
+BT Percepção
+
+Percepção gustativa
+DA smagsperception
+DE Geschmackssinn
+EN sense of taste
+ES percepción gustativa
+FI makuaisti
+FR perception gustative
+IT percezione gustativa
+NL smaakzin
+SV smakförnimmelse
+BT Percepção
+
+Percepção olfativa
+DA lugtperception
+DE Geruchssinn
+EN sense of smell
+ES percepción olfativa
+FI hajuaisti
+FR perception olfactive
+IT percezione olfattiva
+NL reukzin
+SV luktförnimmelse
+BT Percepção
+
+Percepção social
+DA social perception
+DE Soziale Wahrnehmung
+EN social perception
+ES percepción social
+FI sosiaalinen havaitseminen
+FR perception sociale
+IT percezione sociale
+NL sociale perceptie
+SV social perception
+BT Percepção
+NT Percepção de papéis
+
+Percepção táctil
+DA taktil perception
+DE Tastwahrnehmung
+EN tactual perception
+ES percepción táctil
+FI kosketushavainnot
+FR perception tactile
+IT percezione tattile
+NL tastwaarneming
+SV taktil perception
+BT Percepção
+
+Percepção visual
+DA synsopfattelse
+DE Visuelle Wahrnehmung
+EN visual perception
+ES percepción visual
+FI näköhavainnot
+FR perception visuelle
+IT percezione visiva
+NL visuele waarneming
+SV visuell perception
+BT Percepção
+NT Capacidade visual
+NT Cor
+NT Vista
+
 Transição ensino básico-secundário primeiro ciclo
 DA overgang fra 6. til 7. klasse
 DE Übergang Primarbildung-Sekundarbildung
