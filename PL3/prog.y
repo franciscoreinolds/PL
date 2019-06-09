@@ -73,8 +73,30 @@ void prints_translations(GHashTable* toPrint){
 	}
 }
 
+void concept_destroyer (gpointer data) {
+	/*
+	struct concept* estrutura = *(concept**) data;
+	char* aux = (char*) (data->term);
+	char* aux = (char*) estrutura->term;
+	printf("Term: %s\n", aux);
+	*/
+	struct concept* estrutura = data;
+	g_list_free_full(estrutura->scope,free);
+	g_list_free_full(estrutura->comments,free);
+	
+	g_hash_table_remove_all(estrutura->translations);
+	g_hash_table_destroy(estrutura->translations);
+	
+	g_hash_table_remove_all(estrutura->relations);
+	g_hash_table_destroy(estrutura->relations);
+}
+
+void relation_destroyer(gpointer data) {
+	g_list_free_full((GList*) data,free);
+}
+
 GHashTable* copy_translations (GHashTable* hash){
-	GHashTable* res = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
+	GHashTable* res = g_hash_table_new_full(g_str_hash,g_str_equal,free,free);
 	GHashTableIter iter;
 	gpointer key1;
 	gpointer value1;
@@ -90,7 +112,7 @@ GHashTable* copy_translations (GHashTable* hash){
 }
 
 GHashTable* copy_relations (GHashTable* hash){
-	GHashTable* res = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
+	GHashTable* res = g_hash_table_new_full(g_str_hash,g_str_equal,free,relation_destroyer);
 	GHashTableIter iter;
 	gpointer key1;
 	gpointer value1;
@@ -169,13 +191,11 @@ Language 	: 	trans
 
 trans 	:	TRANS 	{
 						languages = $1;
-						//g_tree_foreach(languages, (GTraverseFunc) prettyEntry, NULL);
 					}		
 		;
 
 base 	:	BASE 	{
 						baselang = $1;
-						//printf("Base: %s\n",baselang);
 					}
 		;
 
@@ -184,11 +204,8 @@ inverses 	: 	inverse
 			;
 
 inverse 	:	INV 	{	
-							struct info* estrutura;
-							estrutura = $1;
-							//printf("Info.rel1: %s\n", estrutura->rel1);
-							g_hash_table_insert(relations_table,strdup(estrutura->rel1),strdup(estrutura->rel2));
-							g_hash_table_insert(relations_table,strdup(estrutura->rel2),strdup(estrutura->rel1));				
+							g_hash_table_insert(relations_table,strdup($1->rel1),strdup($1->rel2));
+							g_hash_table_insert(relations_table,strdup($1->rel2),strdup($1->rel1));
 						}
 			;		
 
@@ -197,7 +214,9 @@ Concepts 	:	Concept
 			;
 
 Concept 	:	START_CONCEPT	Base_Term 	Elements 	{	
-																			struct concept* Con = malloc(sizeof(struct concept)); 
+																			struct concept* Con = malloc(sizeof(struct concept));
+																			//printf("Con->term: %s\n",$2);
+																			Con->term = NULL;
 																			Con->term = strdup($2);
 																			Con->translations = copy_translations(translations);
 																			Con->relations = copy_relations(relations_terms);
@@ -229,8 +248,6 @@ Scope_Notes	:	Scope_Note
 			;
 
 Scope_Note 	:	SCOPE 	{
-							$$ = $1;
-							//printf("Scope_Note: %s\n",$1+3);
 							scope_notes = g_list_append(scope_notes,strdup($1+3));
 						}
 			;
@@ -240,15 +257,12 @@ Comments 	:	Comment
 			;
 
 Comment 	:	COMMENT 	{
-								$$ = $1;
-								//printf("Comment: %s\n",$1+2);
-								comments = g_list_append(comments,strdup($1+2));
+								comments = g_list_append(comments,strdup($1+1));
 							}
 			;
 
 Base_Term 	:	WORD 	{
 							$$ = $1;
-							//printf("Hi: %s\n",$1);
 						}
 			;
 
@@ -257,10 +271,8 @@ Translations	:	Translation
 				;
 
 Translation	:	TRANSLATION	{
-								struct info* toInsert;
-								toInsert = $1;
 								//printf("Gonna insert into translations %s -> %s\n",toInsert->rel1,toInsert->rel2);
-								g_hash_table_insert(translations,strdup(toInsert->rel1),strdup(toInsert->rel2));
+								g_hash_table_insert(translations,strdup($1->rel1),strdup($1->rel2));
 							}
 			;
 
@@ -281,8 +293,8 @@ Relation 	:	RELATION 	{
 									g_hash_table_insert(relations_terms,rel->term,lista);
 								}
 								else {
-									GList* toInsert = g_list_copy_deep(rel->collection,(GCopyFunc)strdup,NULL);
-									g_hash_table_insert(relations_terms,rel->term,toInsert);
+									g_hash_table_insert(relations_terms,rel->term,g_list_copy_deep(rel->collection,(GCopyFunc)strdup,NULL));
+									g_list_free_full(rel->collection,free);
 								}
 								
 							}
@@ -291,11 +303,13 @@ Relation 	:	RELATION 	{
 %%
 
 int main(){
-	concepts_table = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
-	languages =  g_tree_new((GCompareFunc)strcmp);
-	relations_terms = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
-	relations_table = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
-	translations = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
+	concepts_table = g_hash_table_new_full(g_str_hash,g_str_equal,free,(GDestroyNotify) concept_destroyer);
+	relations_terms = g_hash_table_new_full(g_str_hash,g_str_equal,free,relation_destroyer);
+	relations_table = g_hash_table_new_full(g_str_hash,g_str_equal,free,free);
+	translations = g_hash_table_new_full(g_str_hash,g_str_equal,free,free);
+
+	languages =  g_tree_new_full((GCompareDataFunc)strcmp,NULL,free,free);
+	
 	placeholder = g_array_new(FALSE, FALSE, sizeof(GString *));
 	comments = NULL;
 	scope_notes = NULL;
@@ -317,5 +331,8 @@ int main(){
 	g_hash_table_destroy(translations);
 
 	g_tree_destroy(languages);
+
+	free(baselang);
+
 	return(0);
 }

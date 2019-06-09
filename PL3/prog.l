@@ -12,13 +12,11 @@ char* until_space (char* text) {
 	return res;
 }
 
-char* after_space (char* text) {
+int after_space (char* text) {
 	int i = 0;
-	while(text[i]!=' ') i++;
-	char* res = malloc(sizeof(char)*(strlen(text)-i));
-	res[0] = '\0';
-	strncpy(res,text+i+1,strlen(text));
-	return res;
+	while(text[i]!=' ' && text[i]!='\0') i++;
+	if (text[i]!='\0') return i;
+	else return 0;
 }
 	
 int has_comma (char* text){
@@ -33,6 +31,7 @@ GTree* languages;
 GHashTable* inverses;
 
 int inverses_init = 0;
+int languages_init = 0;
 
 %}
 word [a-zA-Z0-9áéíóúàèìòùãẽĩõũâêîôûäïöüåøñçæ\'ó]+
@@ -56,19 +55,19 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 							}	
 (%inv).*					{
 								if (!inverses_init)	{
-									inverses = g_hash_table_new_full(g_str_hash,g_str_equal,free,NULL);
+									inverses = g_hash_table_new_full(g_str_hash,g_str_equal,free,free);
 									inverses_init = 1;
 								}
 								char* aux = strtok(yytext," ");
 								aux = strtok(NULL," ");
-								struct info estrutura;
-								estrutura.rel1 = strdup(aux);
+								struct info* estrutura = malloc(sizeof(struct info));
+								estrutura->rel1 = aux;
 								aux = strtok(NULL," ");
-								estrutura.rel2 = strdup(aux);
-								//printf("Estrutura rel1: %s rel2 %s\n",estrutura.rel1,estrutura.rel2);
-								yylval.ptr = &estrutura;
-								g_hash_table_insert(inverses,strdup(estrutura.rel1),strdup(estrutura.rel2));
-								g_hash_table_insert(inverses,strdup(estrutura.rel2),strdup(estrutura.rel1));
+								estrutura->rel2 = aux;
+								printf("Estrutura rel1: %s rel2 %s\n",estrutura->rel1,estrutura->rel2);
+								yylval.ptr = estrutura;
+								g_hash_table_insert(inverses,strdup(estrutura->rel1),strdup(estrutura->rel2));
+								g_hash_table_insert(inverses,strdup(estrutura->rel2),strdup(estrutura->rel1));
 								return INV;
 							}
 [^ \n]+						{
@@ -79,17 +78,30 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 [^ %\n]+\ (.)+				{
 								char* res = until_space(yytext);
 								if (g_tree_lookup(languages,res)) {
-									char* after = after_space(yytext);
-									struct info *estrutura = malloc(sizeof(struct info));
+									char* after = NULL;
+									int spot;
+									if (spot = after_space(yytext)) {
+										after = malloc(sizeof(char)*(strlen(yytext)-spot+1));
+										after[0] = '\0';
+										strncpy(after,yytext+spot+1,strlen(yytext)-1);
+									}
+									struct info* estrutura = malloc(sizeof(struct info));
 									estrutura->rel1 = strdup(res);
 									estrutura->rel2 = strdup(after);
 									yylval.ptr = estrutura;
+									free(res);
+									free(after);
 									return TRANSLATION;
 								}
 								else if (g_hash_table_lookup(inverses,res)){
 									//printf("Found relation:%s\n",yytext);
-									char* after = after_space(yytext);
-									//printf("After: %s\n",after);
+									char* after = NULL;
+									int spot;
+									if (spot = after_space(yytext)) {
+										after = malloc(sizeof(char)*(strlen(yytext)-spot+1));
+										after[0] = '\0';
+										strncpy(after,yytext+spot+1,strlen(yytext)-1);
+									}									//printf("After: %s\n",after);
 									GList*	aux = NULL;
 									int comma = has_comma(after);
 									if (comma) {
@@ -109,21 +121,27 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 									estrutura->term = strdup(res);
 									estrutura->collection = g_list_copy_deep(aux,(GCopyFunc) strdup,NULL);
 									yylval.rel = estrutura;
+									g_list_free_full(aux,free);
+									free(res);
+									free(after);
 									return RELATION;
 								}
 								else if (!strncmp(res,"SN",2)) { // Scope_Note
 									//printf("FOUND Scope_Note: %s\n",yytext);
-									yylval.string = strdup(yytext);
+									yylval.string = yytext;
+									free(res);
 									return SCOPE;
 								}
 								else if (res[0] == '#') { // Comment
 									//printf("Found Comment: %s\n",yytext);
-									yylval.string = strdup(yytext);
+									yylval.string = yytext;
+									free(res);
 									return COMMENT;
 								}
 								else { // Term
 									//printf("Found term: %s\n",yytext);
 									yylval.string = strdup(yytext); 
+									free(res);
 									return WORD;
 								}
 							}	
@@ -135,8 +153,10 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 %%
 
 int yywrap(){
+	g_hash_table_destroy(inverses);
 	/*
-		g_tree_foreach(languages, (GTraverseFunc) printEntry, NULL);
+	g_tree_destroy(languages);
+			g_tree_foreach(languages, (GTraverseFunc) printEntry, NULL);
 		//if (g_tree_lookup(languages,"EN")) printf("Found EN\n");
 		g_tree_destroy(languages);
 		GHashTableIter iter;
