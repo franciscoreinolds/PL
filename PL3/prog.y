@@ -27,20 +27,14 @@ GList* scope_notes;
 GString *s;
 
 int prettyEntry(char* key, char* value) {
-  printf("PRETTYkey: %s\tvalue: %s\n", key, value);
+  //printf("PRETTYkey: %s\tvalue: %s\n", key, value);
   return 0;
-}
-
-void print(gpointer key, gpointer value, gpointer data) {
- printf("Here are some cities in %s: ", (gchar*) key);
- g_slist_foreach((GSList*)value, (GFunc)printf, NULL);
- printf("\n");
 }
 
 void prints_glist (GList* toPrint, char* list_type){
 	int lim = g_list_length(toPrint);
 	int it = 0;
-	while (it < lim) printf("%s[%d] -> %s\n",list_type,it,(gchar*) g_list_nth_data(toPrint,it++));
+	//while (it < lim) printf("%s[%d] -> %s\n",list_type,it,(gchar*) g_list_nth_data(toPrint,it++));
 }
 
 void prints_relations(GHashTable* toPrint, FILE* html){
@@ -62,7 +56,7 @@ void prints_relations(GHashTable* toPrint, FILE* html){
 			}else{ 
 				fprintf(html, "<tr><td>%s</td><td>%s</td></tr>", key, value2);
 			}
-			printf("%s[%d] -> %s\n", key , i , value2);
+			//printf("%s[%d] -> %s\n", key , i , value2);
 			i++;
 		}
 	}
@@ -90,7 +84,7 @@ void prints_translations(GHashTable* toPrint, FILE* html){
 		}else{ */
 			fprintf(html, "<tr><td>%s</td><td>%s</td></tr>", key, value);
 		// }
-		printf("Translations: %s <> %s \n",key,value);
+		//printf("Translations: %s <> %s \n",key,value);
 	}
 
 	fprintf(html, "</table>");
@@ -148,47 +142,33 @@ GHashTable* copy_relations (GHashTable* hash){
 void print_concepts() {
 	FILE* html = NULL;
 	char* dir = "html/";
-	printf("Size: %d\n",g_hash_table_size(concepts_table));
 	GHashTableIter iter;
 	gpointer key1;
 	gpointer value1;
 	g_hash_table_iter_init (&iter, concepts_table);
 	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
 		gchar* key = (gchar*) key1;
-		printf("Antes do seg\n");
 		char* fname = malloc(sizeof(char*) * (strlen(dir)+strlen(key)+strlen(".html")+4));
 		fname[0]='\0';
 		strcat(fname, dir);
-		printf("AAntes do seg\n");
 		strcat(fname, key);
-		printf("Antes do seg\n");
-		printf("KEYYYYYYYY: %s PRESS F IN THE CHAT\n", key);
 		strcat(fname, ".html");
-		printf("------FNAME: %s-----------", fname);
 		html = fopen(fname, "a");
 		fprintf(html, "<!DOCTYPE html><html><head><style>#customers {font-family: Arial;border-collapse: collapse;width: 100%;}#customers td, #customers th {border: 1px solid #ddd;padding: 8px;}#customers tr:nth-child(even){background-color: #f2f2f2;}#customers tr:hover {background-color: #ddd;}#customers th {padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #4CAF50;color: white;}</style></head><body><h1><font color = \"#4CAF50\">%s </font></h1>", key);
 		struct concept* value = value1;
-		puts("------------------");
-		printf("\nConcept\n");
-		printf("Term -> %s\n",key);
-		printf("\nRelations and Terms\n");
 
 		// PRINTING RELATIONS ----------
 		prints_relations(value->relations, html);
-		printf("\nAvailable Translations\n");
 
 		// PRINTING TRANSLATIONS ----------
 		prints_translations(value->translations, html);
 		if (g_list_length(value->comments)) {
-			printf("\nAvailable Comments\n");
-			prints_glist(value->comments,"Comments");
+			//prints_glist(value->comments,"Comments");
 		}
 		if (g_list_length(value->scope)){
-			printf("\nAvailable Scope Notes\n");
-			prints_glist(value->scope,"Scope Notes");
+			//prints_glist(value->scope,"Scope Notes");
 		}
 		fprintf(html, "</body></html>");
-		puts(" ");
 		free(fname);
 	}
 }
@@ -350,7 +330,6 @@ int main(){
 	scope_notes = NULL;
 
 	yyparse();
-	puts("------------------");
 	print_concepts();
 
 	if (g_hash_table_size(concepts_table)) g_hash_table_remove_all(concepts_table);
