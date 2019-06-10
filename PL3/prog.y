@@ -165,13 +165,18 @@ void print_concepts() {
 		if (g_list_length(value->comments)) {
 			//prints_glist(value->comments,"Comments");
 		}
-		if (g_list_length(value->scope)){
-			//prints_glist(value->scope,"Scope Notes");
+
+		fprintf(html, "<table id=\"customers\"><col width = \"100%\"><tr><th>Scope Note</th>");
+		GList *l;
+
+		for (l = value->scope; l != NULL; l = l->next){ 
+			fprintf(html, "<tr><td>%s</td><td>", l->data);
 		}
 		fprintf(html, "</body></html>");
 		free(fname);
 	}
 }
+
 
 void yyerror(char* s){
 	printf("Erro sintático %s\n",s);
