@@ -177,6 +177,7 @@ void print_concepts() {
 	}
 }
 
+
 void yyerror(char* s){
 	printf("Erro sintático %s\n",s);
 }

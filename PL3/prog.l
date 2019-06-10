@@ -68,6 +68,10 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 								g_hash_table_insert(inverses,strdup(estrutura->rel2),strdup(estrutura->rel1));
 								return INV;
 							}
+(#).*						{
+								yylval.string = yytext;
+								return COMMENT;
+							}							
 [^ \n]+						{
 								yylval.string = yytext; 
 								return WORD;
@@ -103,7 +107,6 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 											while (toTok){
 												if (toTok[0]==' ') aux = g_list_append(aux,strndup(toTok+1,strlen(toTok)-1));
 												else aux = g_list_append(aux,strdup(toTok));
-												//printf("Added to array aux: %s\n",toTok);
 												toTok = strtok(NULL,",");
 												it++;
 											}
@@ -121,26 +124,22 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 									return RELATION;
 								}
 								else if (!strncmp(res,"SN",2)) { // Scope_Note
-									//printf("FOUND Scope_Note: %s\n",yytext);
 									yylval.string = yytext;
 									free(res);
 									return SCOPE;
 								}
 								else if (res[0] == '#') { // Comment
-									//printf("Found Comment: %s\n",yytext);
 									yylval.string = yytext;
 									free(res);
 									return COMMENT;
 								}
 								else { // Term
-									//printf("Found term: %s\n",yytext);
 									yylval.string = yytext; 
 									free(res);
 									return WORD;
 								}
 							}	
 \n[\n]+						{
-								//printf("New Concept\n");
 								return START_CONCEPT;
 							}
 .|\n 						{;}
@@ -148,20 +147,5 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 
 int yywrap(){
 	g_hash_table_destroy(inverses);
-	/*
-	g_tree_destroy(languages);
-			g_tree_foreach(languages, (GTraverseFunc) printEntry, NULL);
-		//if (g_tree_lookup(languages,"EN")) printf("Found EN\n");
-		g_tree_destroy(languages);
-		GHashTableIter iter;
-		gpointer key1;
-		gpointer value1;
-		g_hash_table_iter_init (&iter, inverses);
-		while (g_hash_table_iter_next (&iter, &key1, &value1)) {
-			gchar* key = (gchar*) key1;
-			gchar* value = (gchar*) value1;
-			printf("Pair: %s <> %s \n",key,value);
-		}
-	*/
 	return 1;
 }
