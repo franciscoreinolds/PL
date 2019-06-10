@@ -42,7 +42,6 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 								char* aux = strtok(yytext," ");
 								aux = strtok(NULL," ");
 								while(aux){
-									//printf("Language: %s\n",aux);
 									g_tree_insert(languages,strdup(aux),strdup(aux));
 									aux = strtok(NULL," ");
 								}
@@ -64,7 +63,6 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 								estrutura->rel1 = aux;
 								aux = strtok(NULL," ");
 								estrutura->rel2 = aux;
-								printf("Estrutura rel1: %s rel2 %s\n",estrutura->rel1,estrutura->rel2);
 								yylval.ptr = estrutura;
 								g_hash_table_insert(inverses,strdup(estrutura->rel1),strdup(estrutura->rel2));
 								g_hash_table_insert(inverses,strdup(estrutura->rel2),strdup(estrutura->rel1));
@@ -76,7 +74,7 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 							}												
 [^ %\n]+\ (.)+				{
 								char* res = until_space(yytext);
-								if (g_tree_lookup(languages,res)) {
+								if (g_tree_lookup(languages,res)) { // it's a language
 									char* after = NULL;
 									int spot;
 									if (spot = after_space(yytext)) {
@@ -92,26 +90,27 @@ space [a-zA-Z0-9 ,()+\*-/:+áéíóúàèìòùãẽĩõũâêîôûäïöüåø
 									free(after);
 									return TRANSLATION;
 								}
-								else if (g_hash_table_lookup(inverses,res)){
+								else if (g_hash_table_lookup(inverses,res)){ //it's a relation
 									char* after = NULL;
-									int spot;
-									if (spot = after_space(yytext)) {
-										after = malloc(sizeof(char)*(strlen(yytext)-spot+1));
-										after = strndup(yytext+spot+1,strlen(yytext)-1);
-									}
 									GList*	aux = NULL;
-									int comma = has_comma(after);
-									if (comma) {
-										char* toTok = strtok(after,", ");
-										int it = 0;
-										while (toTok){
-											aux = g_list_append(aux,strdup(toTok));
-											toTok = strtok(NULL,", ");
-											it++;
+									int spot = after_space(yytext);
+									if (spot) {
+										after = strndup(yytext+spot+1,strlen(yytext)-1);
+										int comma = has_comma(after);
+										if (comma) {
+											char* toTok = strtok(after,",");
+											int it = 0;
+											while (toTok){
+												if (toTok[0]==' ') aux = g_list_append(aux,strndup(toTok+1,strlen(toTok)-1));
+												else aux = g_list_append(aux,strdup(toTok));
+												//printf("Added to array aux: %s\n",toTok);
+												toTok = strtok(NULL,",");
+												it++;
+											}
 										}
-									}									
-									else aux = g_list_append(aux,strdup(after));
-									
+										else aux = g_list_append(aux,strdup(after));
+									}																			
+									else aux = g_list_append(aux,strdup(yytext));
 									struct relation* estrutura = malloc(sizeof(struct relation));
 									estrutura->term = strdup(res);
 									estrutura->collection = g_list_copy_deep(aux,(GCopyFunc) strdup,NULL);

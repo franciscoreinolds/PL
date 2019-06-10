@@ -1,0 +1,486 @@
+State 9 conflicts: 1 shift/reduce
+State 26 conflicts: 1 shift/reduce
+State 28 conflicts: 1 shift/reduce
+State 30 conflicts: 1 shift/reduce
+State 32 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: Languages Concepts
+
+    2 Languages: Language
+    3          | Languages Language
+
+    4 Language: trans
+    5         | base
+    6         | inverses
+
+    7 trans: TRANS
+
+    8 base: BASE
+
+    9 inverses: inverse
+   10         | inverses inverse
+
+   11 inverse: INV
+
+   12 Concepts: Concept
+   13         | Concepts Concept
+
+   14 Concept: START_CONCEPT Base_Term Elements
+
+   15 Elements: Element
+   16         | Elements Element
+
+   17 Element: Translations
+   18        | Relations
+   19        | Scope_Notes
+   20        | Comments
+
+   21 Scope_Notes: Scope_Note
+   22            | Scope_Notes Scope_Note
+
+   23 Scope_Note: SCOPE
+
+   24 Comments: Comment
+   25         | Comments Comment
+
+   26 Comment: COMMENT
+
+   27 Base_Term: WORD
+
+   28 Translations: Translation
+   29             | Translations Translation
+
+   30 Translation: TRANSLATION
+
+   31 Relations: Relation
+   32          | Relations Relation
+
+   33 Relation: RELATION
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+WORD (258) 27
+BASE (259) 8
+COMMENT (260) 26
+SCOPE (261) 23
+INV (262) 11
+TRANSLATION (263) 30
+RELATION (264) 33
+TRANS (265) 7
+START_CONCEPT (266) 14
+
+
+Nonterminals, with rules where they appear
+
+$accept (12)
+    on left: 0
+Program (13)
+    on left: 1, on right: 0
+Languages (14)
+    on left: 2 3, on right: 1 3
+Language (15)
+    on left: 4 5 6, on right: 2 3
+trans (16)
+    on left: 7, on right: 4
+base (17)
+    on left: 8, on right: 5
+inverses (18)
+    on left: 9 10, on right: 6 10
+inverse (19)
+    on left: 11, on right: 9 10
+Concepts (20)
+    on left: 12 13, on right: 1 13
+Concept (21)
+    on left: 14, on right: 12 13
+Elements (22)
+    on left: 15 16, on right: 14 16
+Element (23)
+    on left: 17 18 19 20, on right: 15 16
+Scope_Notes (24)
+    on left: 21 22, on right: 19 22
+Scope_Note (25)
+    on left: 23, on right: 21 22
+Comments (26)
+    on left: 24 25, on right: 20 25
+Comment (27)
+    on left: 26, on right: 24 25
+Base_Term (28)
+    on left: 27, on right: 14
+Translations (29)
+    on left: 28 29, on right: 17 29
+Translation (30)
+    on left: 30, on right: 28 29
+Relations (31)
+    on left: 31 32, on right: 18 32
+Relation (32)
+    on left: 33, on right: 31 32
+
+
+State 0
+
+    0 $accept: . Program $end
+
+    BASE   shift, and go to state 1
+    INV    shift, and go to state 2
+    TRANS  shift, and go to state 3
+
+    Program    go to state 4
+    Languages  go to state 5
+    Language   go to state 6
+    trans      go to state 7
+    base       go to state 8
+    inverses   go to state 9
+    inverse    go to state 10
+
+
+State 1
+
+    8 base: BASE .
+
+    $default  reduce using rule 8 (base)
+
+
+State 2
+
+   11 inverse: INV .
+
+    $default  reduce using rule 11 (inverse)
+
+
+State 3
+
+    7 trans: TRANS .
+
+    $default  reduce using rule 7 (trans)
+
+
+State 4
+
+    0 $accept: Program . $end
+
+    $end  shift, and go to state 11
+
+
+State 5
+
+    1 Program: Languages . Concepts
+    3 Languages: Languages . Language
+
+    BASE           shift, and go to state 1
+    INV            shift, and go to state 2
+    TRANS          shift, and go to state 3
+    START_CONCEPT  shift, and go to state 12
+
+    Language  go to state 13
+    trans     go to state 7
+    base      go to state 8
+    inverses  go to state 9
+    inverse   go to state 10
+    Concepts  go to state 14
+    Concept   go to state 15
+
+
+State 6
+
+    2 Languages: Language .
+
+    $default  reduce using rule 2 (Languages)
+
+
+State 7
+
+    4 Language: trans .
+
+    $default  reduce using rule 4 (Language)
+
+
+State 8
+
+    5 Language: base .
+
+    $default  reduce using rule 5 (Language)
+
+
+State 9
+
+    6 Language: inverses .
+   10 inverses: inverses . inverse
+
+    INV  shift, and go to state 2
+
+    INV       [reduce using rule 6 (Language)]
+    $default  reduce using rule 6 (Language)
+
+    inverse  go to state 16
+
+
+State 10
+
+    9 inverses: inverse .
+
+    $default  reduce using rule 9 (inverses)
+
+
+State 11
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+State 12
+
+   14 Concept: START_CONCEPT . Base_Term Elements
+
+    WORD  shift, and go to state 17
+
+    Base_Term  go to state 18
+
+
+State 13
+
+    3 Languages: Languages Language .
+
+    $default  reduce using rule 3 (Languages)
+
+
+State 14
+
+    1 Program: Languages Concepts .
+   13 Concepts: Concepts . Concept
+
+    START_CONCEPT  shift, and go to state 12
+
+    $default  reduce using rule 1 (Program)
+
+    Concept  go to state 19
+
+
+State 15
+
+   12 Concepts: Concept .
+
+    $default  reduce using rule 12 (Concepts)
+
+
+State 16
+
+   10 inverses: inverses inverse .
+
+    $default  reduce using rule 10 (inverses)
+
+
+State 17
+
+   27 Base_Term: WORD .
+
+    $default  reduce using rule 27 (Base_Term)
+
+
+State 18
+
+   14 Concept: START_CONCEPT Base_Term . Elements
+
+    COMMENT      shift, and go to state 20
+    SCOPE        shift, and go to state 21
+    TRANSLATION  shift, and go to state 22
+    RELATION     shift, and go to state 23
+
+    Elements      go to state 24
+    Element       go to state 25
+    Scope_Notes   go to state 26
+    Scope_Note    go to state 27
+    Comments      go to state 28
+    Comment       go to state 29
+    Translations  go to state 30
+    Translation   go to state 31
+    Relations     go to state 32
+    Relation      go to state 33
+
+
+State 19
+
+   13 Concepts: Concepts Concept .
+
+    $default  reduce using rule 13 (Concepts)
+
+
+State 20
+
+   26 Comment: COMMENT .
+
+    $default  reduce using rule 26 (Comment)
+
+
+State 21
+
+   23 Scope_Note: SCOPE .
+
+    $default  reduce using rule 23 (Scope_Note)
+
+
+State 22
+
+   30 Translation: TRANSLATION .
+
+    $default  reduce using rule 30 (Translation)
+
+
+State 23
+
+   33 Relation: RELATION .
+
+    $default  reduce using rule 33 (Relation)
+
+
+State 24
+
+   14 Concept: START_CONCEPT Base_Term Elements .
+   16 Elements: Elements . Element
+
+    COMMENT      shift, and go to state 20
+    SCOPE        shift, and go to state 21
+    TRANSLATION  shift, and go to state 22
+    RELATION     shift, and go to state 23
+
+    $default  reduce using rule 14 (Concept)
+
+    Element       go to state 34
+    Scope_Notes   go to state 26
+    Scope_Note    go to state 27
+    Comments      go to state 28
+    Comment       go to state 29
+    Translations  go to state 30
+    Translation   go to state 31
+    Relations     go to state 32
+    Relation      go to state 33
+
+
+State 25
+
+   15 Elements: Element .
+
+    $default  reduce using rule 15 (Elements)
+
+
+State 26
+
+   19 Element: Scope_Notes .
+   22 Scope_Notes: Scope_Notes . Scope_Note
+
+    SCOPE  shift, and go to state 21
+
+    SCOPE     [reduce using rule 19 (Element)]
+    $default  reduce using rule 19 (Element)
+
+    Scope_Note  go to state 35
+
+
+State 27
+
+   21 Scope_Notes: Scope_Note .
+
+    $default  reduce using rule 21 (Scope_Notes)
+
+
+State 28
+
+   20 Element: Comments .
+   25 Comments: Comments . Comment
+
+    COMMENT  shift, and go to state 20
+
+    COMMENT   [reduce using rule 20 (Element)]
+    $default  reduce using rule 20 (Element)
+
+    Comment  go to state 36
+
+
+State 29
+
+   24 Comments: Comment .
+
+    $default  reduce using rule 24 (Comments)
+
+
+State 30
+
+   17 Element: Translations .
+   29 Translations: Translations . Translation
+
+    TRANSLATION  shift, and go to state 22
+
+    TRANSLATION  [reduce using rule 17 (Element)]
+    $default     reduce using rule 17 (Element)
+
+    Translation  go to state 37
+
+
+State 31
+
+   28 Translations: Translation .
+
+    $default  reduce using rule 28 (Translations)
+
+
+State 32
+
+   18 Element: Relations .
+   32 Relations: Relations . Relation
+
+    RELATION  shift, and go to state 23
+
+    RELATION  [reduce using rule 18 (Element)]
+    $default  reduce using rule 18 (Element)
+
+    Relation  go to state 38
+
+
+State 33
+
+   31 Relations: Relation .
+
+    $default  reduce using rule 31 (Relations)
+
+
+State 34
+
+   16 Elements: Elements Element .
+
+    $default  reduce using rule 16 (Elements)
+
+
+State 35
+
+   22 Scope_Notes: Scope_Notes Scope_Note .
+
+    $default  reduce using rule 22 (Scope_Notes)
+
+
+State 36
+
+   25 Comments: Comments Comment .
+
+    $default  reduce using rule 25 (Comments)
+
+
+State 37
+
+   29 Translations: Translations Translation .
+
+    $default  reduce using rule 29 (Translations)
+
+
+State 38
+
+   32 Relations: Relations Relation .
+
+    $default  reduce using rule 32 (Relations)

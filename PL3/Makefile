@@ -10,4 +10,4 @@ y.tab.c: prog.y
 	yacc -d -v prog.y
 
 clean:
-	rm lex.yy.c y.tab.* prog y.output
+	rm lex.yy.c y.tab.* prog y.output html/*

@@ -43,38 +43,62 @@ void prints_glist (GList* toPrint, char* list_type){
 	while (it < lim) printf("%s[%d] -> %s\n",list_type,it,(gchar*) g_list_nth_data(toPrint,it++));
 }
 
-void prints_relations(GHashTable* toPrint){
+void prints_relations(GHashTable* toPrint, FILE* html){
 	GHashTableIter iter;
 	gpointer key1;
 	gpointer value1;
 	g_hash_table_iter_init (&iter, toPrint);
+
+	fprintf(html, "<table id=\"customers\"><col width = \"50%\"><tr><th>Relação</th>\n<th>Termo</th>");
+
 	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
 		gchar* key = (gchar*) key1;
 		GList* value = (GList*) value1;
-		//printf("Relations: %s <> %d \n",key,g_list_length(value));
 		int i = 0;
 		while (i < g_list_length(value)){
-			printf("%s[%d] -> %s\n", key , i , (gchar*) g_list_nth_data(value,i));
+			gchar* value2 = (gchar*) g_list_nth_data(value,i);
+			if(g_hash_table_contains(concepts_table, value2) == TRUE){
+				fprintf(html, "<tr><td>%s</td><td><a href=\"%s.html\"><b>%s</b></a></td></tr>", key,  value2, value2);
+			}else{ 
+				fprintf(html, "<tr><td>%s</td><td>%s</td></tr>", key, value2);
+			}
+			printf("%s[%d] -> %s\n", key , i , value2);
 			i++;
 		}
 	}
+
+	fprintf(html, "</table>");
+
+
 }
 
-void prints_translations(GHashTable* toPrint){
+void prints_translations(GHashTable* toPrint, FILE* html){
 	GHashTableIter iter;
 	gpointer key1;
 	gpointer value1;
 	g_hash_table_iter_init (&iter, toPrint);
+
+	fprintf(html, "<table id =\"customers\"><col width = \"50%\"><tr><th>Língua</th>\n<th>Tradução</th>");
 
 	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
 		gchar* key = (gchar*) key1;
 		gchar* value = (gchar*) value1;
+
+		
+		/* if(g_hash_table_contains(concepts_table, value) == TRUE){
+			fprintf(html, "<tr><td>%s</td><td><a href=\"%s.html\">%s</a></td>", key, value, value);
+		}else{ */
+			fprintf(html, "<tr><td>%s</td><td>%s</td></tr>", key, value);
+		// }
 		printf("Translations: %s <> %s \n",key,value);
 	}
+
+	fprintf(html, "</table>");
 }
 
 void concept_destroyer (gpointer data) {
 	struct concept* estrutura = data;
+
 	g_list_free_full(estrutura->scope,free);
 	g_list_free_full(estrutura->comments,free);
 	
@@ -115,7 +139,6 @@ GHashTable* copy_relations (GHashTable* hash){
 	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
 		gchar* key = (gchar*) key1;
 		GList* value = (GList*) value1;
-		//printf("Relations: %s <> %d \n",key,g_list_length(value));
 		g_hash_table_insert(res,strdup(key),g_list_copy_deep(value,(GCopyFunc) strdup,NULL));
 	}
 
@@ -123,6 +146,9 @@ GHashTable* copy_relations (GHashTable* hash){
 }
 
 void print_concepts() {
+	FILE* html = NULL;
+	char* dir = "html/";
+	char* fname;
 	printf("Size: %d\n",g_hash_table_size(concepts_table));
 	GHashTableIter iter;
 	gpointer key1;
@@ -130,22 +156,35 @@ void print_concepts() {
 	g_hash_table_iter_init (&iter, concepts_table);
 	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
 		gchar* key = (gchar*) key1;
+		fname[0]='\0';
+		strcat(fname, dir);
+		strcat(fname, key);
+		printf("KEYYYYYYYY: %s PRESS F IN THE CHAT\n", key);
+		strcat(fname, ".html");
+		printf("------FNAME: %s-----------", fname);
+		html = fopen(fname, "a");
+		fprintf(html, "<!DOCTYPE html><html><head><style>#customers {font-family: Arial;border-collapse: collapse;width: 100%;}#customers td, #customers th {border: 1px solid #ddd;padding: 8px;}#customers tr:nth-child(even){background-color: #f2f2f2;}#customers tr:hover {background-color: #ddd;}#customers th {padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #4CAF50;color: white;}</style></head><body><h1><font color = \"#4CAF50\">%s </font></h1>", key);
 		struct concept* value = value1;
 		puts("------------------");
 		printf("\nConcept\n");
 		printf("Term -> %s\n",key);
 		printf("\nRelations and Terms\n");
-		prints_relations(value->relations);
+
+		// PRINTING RELATIONS ----------
+		prints_relations(value->relations, html);
 		printf("\nAvailable Translations\n");
-		prints_translations(value->translations);
+
+		// PRINTING TRANSLATIONS ----------
+		prints_translations(value->translations, html);
 		if (g_list_length(value->comments)) {
 			printf("\nAvailable Comments\n");
 			prints_glist(value->comments,"Comments");
 		}
-		if (g_list_length(value->scope)) {
+		if (g_list_length(value->scope)){
 			printf("\nAvailable Scope Notes\n");
 			prints_glist(value->scope,"Scope Notes");
 		}
+		fprintf(html, "</body></html>");
 		puts(" ");
 	}
 }
@@ -209,8 +248,6 @@ Concepts 	:	Concept
 
 Concept 	:	START_CONCEPT	Base_Term 	Elements 	{	
 																			struct concept* Con = malloc(sizeof(struct concept));
-																			//printf("Con->term: %s\n",$2);
-																			Con->term = NULL;
 																			Con->term = strdup($2);
 																			Con->translations = copy_translations(translations);
 																			Con->relations = copy_relations(relations_terms);
@@ -224,7 +261,7 @@ Concept 	:	START_CONCEPT	Base_Term 	Elements 	{
 																			scope_notes = NULL;
 																			g_hash_table_remove_all(relations_terms);
 																			g_hash_table_remove_all(translations);
-																		}
+														}
 			;
 
 Elements 	:	Element
@@ -256,7 +293,7 @@ Comment 	:	COMMENT 	{
 			;
 
 Base_Term 	:	WORD 	{
-							$$ = $1;
+							$$ = strdup($1);
 						}
 			;
 
@@ -265,7 +302,6 @@ Translations	:	Translation
 				;
 
 Translation	:	TRANSLATION	{
-								//printf("Gonna insert into translations %s -> %s\n",toInsert->rel1,toInsert->rel2);
 								g_hash_table_insert(translations,strdup($1->rel1),strdup($1->rel2));
 							}
 			;
