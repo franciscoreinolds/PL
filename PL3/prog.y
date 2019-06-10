@@ -51,7 +51,6 @@ void prints_relations(GHashTable* toPrint){
 	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
 		gchar* key = (gchar*) key1;
 		GList* value = (GList*) value1;
-		//printf("Relations: %s <> %d \n",key,g_list_length(value));
 		int i = 0;
 		while (i < g_list_length(value)){
 			printf("%s[%d] -> %s\n", key , i , (gchar*) g_list_nth_data(value,i));
@@ -75,6 +74,7 @@ void prints_translations(GHashTable* toPrint){
 
 void concept_destroyer (gpointer data) {
 	struct concept* estrutura = data;
+
 	g_list_free_full(estrutura->scope,free);
 	g_list_free_full(estrutura->comments,free);
 	
@@ -115,7 +115,6 @@ GHashTable* copy_relations (GHashTable* hash){
 	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
 		gchar* key = (gchar*) key1;
 		GList* value = (GList*) value1;
-		//printf("Relations: %s <> %d \n",key,g_list_length(value));
 		g_hash_table_insert(res,strdup(key),g_list_copy_deep(value,(GCopyFunc) strdup,NULL));
 	}
 
@@ -209,8 +208,6 @@ Concepts 	:	Concept
 
 Concept 	:	START_CONCEPT	Base_Term 	Elements 	{	
 																			struct concept* Con = malloc(sizeof(struct concept));
-																			//printf("Con->term: %s\n",$2);
-																			Con->term = NULL;
 																			Con->term = strdup($2);
 																			Con->translations = copy_translations(translations);
 																			Con->relations = copy_relations(relations_terms);
@@ -224,7 +221,7 @@ Concept 	:	START_CONCEPT	Base_Term 	Elements 	{
 																			scope_notes = NULL;
 																			g_hash_table_remove_all(relations_terms);
 																			g_hash_table_remove_all(translations);
-																		}
+														}
 			;
 
 Elements 	:	Element
@@ -256,7 +253,7 @@ Comment 	:	COMMENT 	{
 			;
 
 Base_Term 	:	WORD 	{
-							$$ = $1;
+							$$ = strdup($1);
 						}
 			;
 
@@ -265,7 +262,6 @@ Translations	:	Translation
 				;
 
 Translation	:	TRANSLATION	{
-								//printf("Gonna insert into translations %s -> %s\n",toInsert->rel1,toInsert->rel2);
 								g_hash_table_insert(translations,strdup($1->rel1),strdup($1->rel2));
 							}
 			;
