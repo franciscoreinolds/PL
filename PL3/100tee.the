@@ -56,6 +56,19 @@ SV abort
 BT Controlo da natalidade
 BT2 Planeamento familiar
 
+Arqueologia
+DA arkæologi
+DE Archäologie
+EN archaeology
+ES arqueología
+FI arkeologia
+FR archéologie
+IT archeologia
+NL archeologie
+SV arkeologi
+BT História
+BT2 Ciências sociais
+
 Baden-Wurttemberg
 DA Baden-Württemberg
 DE Baden-Württemberg
@@ -93,6 +106,19 @@ IT Bielorussia (rss)
 NL Wit-Rusland
 SV Vitryssland
 BT Europa Oriental
+
+Ciências administrativas
+DA forvaltningsvidenskaber
+DE Verwaltungswissenschaft
+EN administrative sciences
+ES ciencias administrativas
+FI hallintotieteet
+FR sciences administratives
+IT scienze amministrative
+NL bestuurswetenschappen
+SV förvaltningsvetenskaper
+BT Ciências sociais
+NT Burocracia
 
 Ciências sociais
 DA samfundsvidenskaber
@@ -270,6 +296,48 @@ SV marginalgrupp
 SN	Num país, grupos sociais de rendimentos baixos, irregulares e incertos, acumulando deficiências ligadas ao meio familiar, à saúde, a uma exclusão relativamente à cultura dominante
 BT Classe social
 BT2 Estrutura social
+
+História da arte
+DA kunsthistorie
+DE Kunstgeschichte
+EN history of art
+ES historia del arte
+FI taidehistoria
+FR histoire de l'art
+IT storia dell'arte
+NL kunstgeschiedenis
+SV konsthistoria
+BT História
+BT2 Ciências sociais
+
+Percepção
+DA perception
+DE Wahrnehmung
+EN perception
+ES percepción
+FI havaitseminen
+FR perception
+IT percezione
+NL waarneming
+SV perception
+NT Percepção auditiva
+NT2 Audição
+NT2 Escuta
+NT Percepção de si
+NT Percepção do espaço
+NT Percepção do outro
+NT Percepção do tempo
+NT Percepção global
+NT Percepção gustativa
+NT Percepção olfativa
+NT Percepção social
+NT2 Percepção de papéis
+NT Percepção táctil
+NT Percepção visual
+NT2 Capacidade visual
+NT2 Cor
+NT2 Vista
+NT Sensação
 
 Percepção de papéis
 DA rolleopfattelse

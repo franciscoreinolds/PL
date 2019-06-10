@@ -148,7 +148,6 @@ GHashTable* copy_relations (GHashTable* hash){
 void print_concepts() {
 	FILE* html = NULL;
 	char* dir = "html/";
-	char* fname;
 	printf("Size: %d\n",g_hash_table_size(concepts_table));
 	GHashTableIter iter;
 	gpointer key1;
@@ -156,9 +155,13 @@ void print_concepts() {
 	g_hash_table_iter_init (&iter, concepts_table);
 	while (g_hash_table_iter_next (&iter, &key1, &value1)) {
 		gchar* key = (gchar*) key1;
+		printf("Antes do seg\n");
+		char* fname = malloc(sizeof(char*) * (strlen(dir)+strlen(key)+strlen(".html")+4));
 		fname[0]='\0';
 		strcat(fname, dir);
+		printf("AAntes do seg\n");
 		strcat(fname, key);
+		printf("Antes do seg\n");
 		printf("KEYYYYYYYY: %s PRESS F IN THE CHAT\n", key);
 		strcat(fname, ".html");
 		printf("------FNAME: %s-----------", fname);
@@ -186,6 +189,7 @@ void print_concepts() {
 		}
 		fprintf(html, "</body></html>");
 		puts(" ");
+		free(fname);
 	}
 }
 
